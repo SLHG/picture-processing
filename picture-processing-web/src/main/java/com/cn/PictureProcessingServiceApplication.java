@@ -9,10 +9,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @MapperScan(basePackages = {"com.cn.dao"}, sqlSessionTemplateRef = "sqlSessionTemplate")
 @EnableScheduling
-public class WXServiceApplication {
+public class PictureProcessingServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(WXServiceApplication.class, args);
+        SpringApplication.run(PictureProcessingServiceApplication.class, args);
     }
 
 }
