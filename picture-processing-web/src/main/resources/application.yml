@@ -1,0 +1,46 @@
+server:
+  port: @control-server.port@
+  servlet:
+    context-path: @control-server.servlet.context-path@
+spring:
+  application:
+    name: @control-spring.application.name@
+  jackson:
+    default-property-inclusion: non_null
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+  #redis连接配置
+#  redis:
+#    cluster:
+#      nodes: @redis.cluster.nodes@
+#    password: @redis.password@
+#    lettuce:
+#      pool:
+#        max-active: @redis.lettuce.pool.max-active@
+#        max-wait: @redis.lettuce.pool.max-wait@
+#        max-idle: @redis.lettuce.pool.max-idle@
+#        min-idle: @redis.lettuce.pool.min-idle@
+#    timeout: @redis.timeout@
+#mysql 数据库配置
+mybatis:
+  mapper-locations: @mybatis.mapper-locations@
+  type-aliases-package: @mybatis.type-aliases-package@
+#mysql分页插件配置
+pagehelper:
+  auto-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+#数据库连接配置
+datasource-master:
+  username: @datasource-master.username@
+  name: @datasource-master.name@
+  url: @datasource-master.url@
+  password: @datasource-master.password@
+  type: @datasource-master.type@
+  driver-class-name: @datasource-master.driver-class-name@
+  filters: @datasource-master.filters@
+  filter-connectProperties: config.decrypt=@datasource-master.druid.config.decrypt@;config.decrypt.key=@datasource-master.druid.connection-properties.publicKey@
+
