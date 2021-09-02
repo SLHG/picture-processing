@@ -14,7 +14,13 @@
 <button id="b1" name="b1" value="red" onclick="bthClick(this)">红</button>
 <button id="b2" name="b2" value="yellow" onclick="bthClick(this)">黄</button>
 <button id="b3" name="b3" value="blue" onclick="bthClick(this)">蓝</button>
+<button class="btn-move" onmousedown="btnMove(0,-1)" onmouseup="btnUp()">上</button>
+<button class="btn-move" onmousedown="btnMove(0,1)" onmouseup="btnUp()">下</button>
+<button class="btn-move" onmousedown="btnMove(-1,0)" onmouseup="btnUp()">左</button>
+<button class="btn-move" onmousedown="btnMove(1,0)" onmouseup="btnUp()">右</button>
+<button onmousedown="btnPhotoChange(1)" onmouseup="ChgBtnUp()">放大</button>
+<button onmousedown="btnPhotoChange(-1)" onmouseup="ChgBtnUp()">缩小</button>
 </body>
 <script src="js/utils/jquery-3.5.1.min.js"></script>
-<script src="js/appointment.js"></script>
+<script src="js/picture.js"></script>
 </html>
