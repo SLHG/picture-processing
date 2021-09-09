@@ -1,9 +1,10 @@
-package com.cn.web;
+package com.cn.web.photo;
 
 import com.alibaba.fastjson.JSON;
 import com.baidu.aip.bodyanalysis.AipBodyAnalysis;
 import com.cn.beans.common.ResultBean;
 import com.cn.beans.photo.BodySegBean;
+import com.cn.web.BDFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.context.annotation.Scope;

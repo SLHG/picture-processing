@@ -11,6 +11,21 @@ spring:
     multipart:
       max-file-size: 20MB
       max-request-size: 20MB
+  #数据库连接配置
+  datasource:
+    url: @datasource-master.url@
+    username: @datasource-master.username@
+    password: @datasource-master.password@
+    driver-class-name: @datasource-master.driver-class-name@
+    type: @datasource-master.type@
+    druid:
+      initial-size: 2
+      max-active: 20
+      min-idle: 2
+      max-wait: 6000
+      name: @datasource-master.name@
+      filters: @datasource-master.filters@
+      connection-properties: config.decrypt=@datasource-master.druid.config.decrypt@;config.decrypt.key=@datasource-master.druid.connection-properties.publicKey@
   #redis连接配置
 #  redis:
 #    cluster:
@@ -23,24 +38,14 @@ spring:
 #        max-idle: @redis.lettuce.pool.max-idle@
 #        min-idle: @redis.lettuce.pool.min-idle@
 #    timeout: @redis.timeout@
-#mysql 数据库配置
+#mybatis 数据库配置
 mybatis:
   mapper-locations: @mybatis.mapper-locations@
   type-aliases-package: @mybatis.type-aliases-package@
 #mysql分页插件配置
 pagehelper:
-  auto-dialect: mysql
+  auto-dialect: true
   reasonable: true
   support-methods-arguments: true
   params: count=countSql
-#数据库连接配置
-datasource-master:
-  username: @datasource-master.username@
-  name: @datasource-master.name@
-  url: @datasource-master.url@
-  password: @datasource-master.password@
-  type: @datasource-master.type@
-  driver-class-name: @datasource-master.driver-class-name@
-  filters: @datasource-master.filters@
-  filter-connectProperties: config.decrypt=@datasource-master.druid.config.decrypt@;config.decrypt.key=@datasource-master.druid.connection-properties.publicKey@
 

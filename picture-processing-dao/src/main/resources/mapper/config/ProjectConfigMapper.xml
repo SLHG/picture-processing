@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.dao.config.ProjectConfigDao">
+    <resultMap id="BaseResultMap" type="com.cn.beans.config.ProjectConfigBean">
+        <result column="config_name" property="configName" jdbcType="VARCHAR"/>
+        <result column="config_key" property="configKey" jdbcType="VARCHAR"/>
+        <result column="config_value" property="configValue" jdbcType="VARCHAR"/>
+        <result column="config_desc" property="configDesc" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <insert id="save">
+        insert into project_config (config_name, config_key, config_value, config_desc)
+        values (#{configName},
+                #{configKey},
+                #{configValue},
+                #{configDesc})
+    </insert>
+    <update id="update">
+        update project_config
+        set config_name=#{configName},
+            config_value=#{configValue},
+            config_desc= #{configDesc}
+        where config_key = #{configKey}
+    </update>
+    <delete id="del" parameterType="map">
+        delete
+        from project_config
+        where config_key = #{configKey}
+        limit 1
+    </delete>
+    <select id="getProjectConfig" resultMap="BaseResultMap">
+        select config_key, config_value
+        from project_config
+    </select>
+    <select id="getList" resultMap="BaseResultMap">
+        select config_name,
+               config_key,
+               config_value,
+               config_desc,
+               DATE_FORMAT(create_time, '%Y-%m-%d %H:%i:%s') as create_time
+        from project_config
+    </select>
+    <select id="get" resultMap="BaseResultMap" parameterType="map">
+        select config_key
+        from project_config
+        where config_key = #{configKey}
+        limit 1
+    </select>
+
+</mapper>
