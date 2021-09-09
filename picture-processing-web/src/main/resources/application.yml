@@ -27,17 +27,17 @@ spring:
       filters: @datasource-master.filters@
       connection-properties: config.decrypt=@datasource-master.druid.config.decrypt@;config.decrypt.key=@datasource-master.druid.connection-properties.publicKey@
   #redis连接配置
-#  redis:
-#    cluster:
-#      nodes: @redis.cluster.nodes@
-#    password: @redis.password@
-#    lettuce:
-#      pool:
-#        max-active: @redis.lettuce.pool.max-active@
-#        max-wait: @redis.lettuce.pool.max-wait@
-#        max-idle: @redis.lettuce.pool.max-idle@
-#        min-idle: @redis.lettuce.pool.min-idle@
-#    timeout: @redis.timeout@
+  redis:
+    cluster:
+      nodes: @redis.cluster.nodes@
+    password: @redis.password@
+    lettuce:
+      pool:
+        max-active: @redis.lettuce.pool.max-active@
+        max-wait: @redis.lettuce.pool.max-wait@
+        max-idle: @redis.lettuce.pool.max-idle@
+        min-idle: @redis.lettuce.pool.min-idle@
+    timeout: @redis.timeout@
 #mybatis 数据库配置
 mybatis:
   mapper-locations: @mybatis.mapper-locations@

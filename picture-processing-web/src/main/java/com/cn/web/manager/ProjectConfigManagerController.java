@@ -2,7 +2,7 @@ package com.cn.web.manager;
 
 import com.cn.beans.common.ResultBean;
 import com.cn.beans.config.ProjectConfigBean;
-import com.cn.config.ConfigReload;
+import com.cn.service.config.ConfigReload;
 import com.cn.service.config.ProjectConfigService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

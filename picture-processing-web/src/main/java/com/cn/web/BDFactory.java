@@ -1,8 +1,8 @@
 package com.cn.web;
 
 import com.baidu.aip.bodyanalysis.AipBodyAnalysis;
-import com.cn.config.ConfigReload;
-import com.cn.config.ProjectConfig;
+import com.cn.service.config.ConfigReload;
+import com.cn.service.config.ProjectConfig;
 
 public class BDFactory extends ConfigReload {
     private static AipBodyAnalysis aipBodyAnalysis;

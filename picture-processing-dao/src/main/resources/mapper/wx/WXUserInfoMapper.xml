@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.dao.wx.WXUserInfoDao">
+    <resultMap id="BaseResultMap" type="com.cn.beans.wx.WXUserInfo">
+        <result column="open_id" property="openId" jdbcType="VARCHAR"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+        <result column="nickName" property="nickName" jdbcType="VARCHAR"/>
+        <result column="gender" property="gender" jdbcType="INTEGER"/>
+        <result column="country" property="country" jdbcType="VARCHAR"/>
+        <result column="province" property="province" jdbcType="VARCHAR"/>
+        <result column="city" property="city" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <insert id="insert" parameterType="com.cn.beans.wx.WXUserInfo">
+        insert into wx_user_info (open_id, mobile, nick_name, gender, country, province, city)
+        values (#{openId}, #{mobile}, #{nickName}, #{gender}, #{country}, #{province}, #{city})
+    </insert>
+    <update id="update" parameterType="com.cn.beans.wx.WXUserInfo">
+        update wx_user_info
+        <set>
+            <if test="mobile !=null and mobile !=''">
+                mobile=
+                #{mobile},
+            </if>
+            <if test="nickName !=null and nickName !=''">
+                nick_name=
+                #{nickName},
+            </if>
+            <if test="gender !=null and gender !=''">
+                gender=
+                #{gender},
+            </if>
+            <if test="country !=null and country !=''">
+                country=
+                #{country},
+            </if>
+            <if test="province !=null and province !=''">
+                province=
+                #{province},
+            </if>
+            <if test="city !=null and city !=''">
+                city=
+                #{city}
+            </if>
+        </set>
+        where open_id=#{openId}
+    </update>
+    <select id="getByOpenId" resultMap="BaseResultMap" resultType="map">
+        select open_id,
+               mobile,
+               nick_name,
+               gender,
+               country,
+               province,
+               city,
+               DATE_FORMAT(create_time, '%Y-%m-%d %H:%i:%s') as create_time
+        from wx_user_info
+        where open_id = #{openId}
+    </select>
+
+
+</mapper>

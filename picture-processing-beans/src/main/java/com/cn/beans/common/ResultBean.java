@@ -1,7 +1,12 @@
 package com.cn.beans.common;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
+@Data
+@NoArgsConstructor
 public class ResultBean {
     public static final String SUCCESS_CODE = "0";
     public static final String FAIL_CODE = "-9999";
@@ -19,50 +24,5 @@ public class ResultBean {
 
     public ResultBean(Object result) {
         this.result = result;
-    }
-
-    public ResultBean() {
-    }
-
-    public String getRtnCode() {
-        return rtnCode;
-    }
-
-    public void setRtnCode(String rtnCode) {
-        this.rtnCode = rtnCode;
-    }
-
-    public String getRtnMsg() {
-        return rtnMsg;
-    }
-
-    public void setRtnMsg(String rtnMsg) {
-        this.rtnMsg = rtnMsg;
-    }
-
-    public Object getResult() {
-        return result;
-    }
-
-    public void setResult(Object result) {
-        this.result = result;
-    }
-
-    public List<?> getResultList() {
-        return resultList;
-    }
-
-    public void setResultList(List<?> resultList) {
-        this.resultList = resultList;
-    }
-
-    @Override
-    public String toString() {
-        return "ResultBean{" +
-                "rtnCode='" + rtnCode + '\'' +
-                ", rtnMsg='" + rtnMsg + '\'' +
-                ", result=" + result +
-                ", resultList=" + resultList +
-                '}';
     }
 }

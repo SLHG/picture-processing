@@ -1,6 +1,5 @@
-package com.cn.config;
+package com.cn.service.config;
 
-import com.cn.service.config.ProjectConfigService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

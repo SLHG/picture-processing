@@ -1,4 +1,4 @@
-package com.cn.config;
+package com.cn.service.config;
 
 import java.util.ArrayList;
 import java.util.List;
