@@ -7,11 +7,6 @@ import com.cn.config.ProjectConfig;
 public class BDFactory extends ConfigReload {
     private static AipBodyAnalysis aipBodyAnalysis;
 
-    //设置APPID/AK/SK
-    public static final String APP_ID = "24780118";
-    public static final String API_KEY = "dKWDpTchDBLyUxlbT0LtbsX5";
-    public static final String SECRET_KEY = "CvYFCGANIVIt987jGrE0AnvzmnWEBopT";
-
     public static AipBodyAnalysis getAipBodyAnalysis() {
         if (aipBodyAnalysis == null) {
             synchronized (AipBodyAnalysis.class) {
