@@ -1,7 +1,8 @@
-package com.cn.service.config;
+package com.cn.service.impl.config;
 
 import com.cn.beans.config.ProjectConfigBean;
 import com.cn.dao.config.ProjectConfigDao;
+import com.cn.service.config.ProjectConfigService;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;

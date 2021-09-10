@@ -1,4 +1,4 @@
-package com.cn.web.photo;
+package com.cn.web.wx;
 
 import com.alibaba.fastjson.JSON;
 import com.baidu.aip.bodyanalysis.AipBodyAnalysis;
@@ -18,10 +18,10 @@ import java.awt.*;
 import java.util.HashMap;
 
 @RestController
-@RequestMapping(value = "/photo")
+@RequestMapping(value = "/wx/photo")
 @Scope("prototype")
 @Slf4j
-public class IdPhotoRestController {
+public class PhotoProcessingController {
 
     AipBodyAnalysis aipBodyAnalysis = BDFactory.getAipBodyAnalysis();
 
