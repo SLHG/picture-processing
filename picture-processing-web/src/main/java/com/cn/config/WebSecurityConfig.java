@@ -59,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 只要保持表单中action和HttpSecurity里配置的loginProcessingUrl一致就可以了，也不用自己去处理，它不会将请求传递给Spring MVC和您的控制器，所以我们就不需要自己再去写一个/user/login的控制器接口了
                 .loginProcessingUrl("/manager/login")//配置默认登录入口
                 .successHandler(loginSuccessHandler)
-                .failureHandler((httpServletRequest, response, e) -> {
+                .failureHandler((request, response, e) -> {
                     response.setCharacterEncoding("utf-8");
                     response.setContentType("application/json;charset=utf-8");
                     PrintWriter writer = response.getWriter();
@@ -70,7 +70,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 //3、注销
                 .logout()
-                .logoutUrl("/logout")
+                .logoutUrl("/manager/logout")
+                .logoutSuccessHandler((request, response, authentication) -> {
+                    response.setCharacterEncoding("utf-8");
+                    response.setContentType("application/json;charset=utf-8");
+                    PrintWriter writer = response.getWriter();
+                    writer.write(JSON.toJSONString(new ResultBean(ResultBean.SUCCESS_CODE, "登出成功")));
+                    writer.flush();
+                    writer.close();
+                })
                 .permitAll()
                 .and()
                 //4、session管理
