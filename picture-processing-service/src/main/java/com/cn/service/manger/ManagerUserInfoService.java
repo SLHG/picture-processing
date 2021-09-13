@@ -10,4 +10,6 @@ public interface ManagerUserInfoService {
     int delete(String userName);
 
     int save(ManagerUserInfo managerUserInfo);
+
+    ManagerUserInfo getUserInfoByUserName(String userName);
 }

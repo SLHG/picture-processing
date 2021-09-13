@@ -41,4 +41,9 @@ public class ManagerUserInfoServiceImpl implements ManagerUserInfoService {
         }
         return managerUserInfoDao.update(managerUserInfo);
     }
+
+    @Override
+    public ManagerUserInfo getUserInfoByUserName(String userName) {
+        return managerUserInfoDao.getUserInfoByUserName(userName);
+    }
 }
