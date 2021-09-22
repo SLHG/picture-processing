@@ -15,6 +15,7 @@ layui.define(['jquery', 'layer'], function (exports) {
     let baseApiUrl = 'http://localhost:8081/service';
 
     let request = {
+        baseApiUrl: baseApiUrl,
         login: function (obj) {
             layer.load();
             $.ajax({

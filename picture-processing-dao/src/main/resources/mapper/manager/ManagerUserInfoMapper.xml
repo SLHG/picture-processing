@@ -5,6 +5,7 @@
         <result column="user_name" property="userName" jdbcType="VARCHAR"/>
         <result column="pass_word" property="passWord" jdbcType="VARCHAR"/>
         <result column="authority" property="authority" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="VARCHAR"/>
     </resultMap>
     <insert id="insert">
         insert into manager_user_info(user_name, pass_word, authority)

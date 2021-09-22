@@ -9,6 +9,7 @@ public class ManagerUserInfo {
     private String userName;
     private String passWord;
     private String authority;
+    private String createTime;
 
 
     public boolean isBlack() {

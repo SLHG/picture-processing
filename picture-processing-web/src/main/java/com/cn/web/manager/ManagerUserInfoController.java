@@ -19,8 +19,8 @@ public class ManagerUserInfoController {
     }
 
     @GetMapping("/get")
-    public ResultBean getList() {
-        return new ResultBean(managerUserInfoService.getList());
+    public ResultBean getList(@RequestParam(defaultValue = "1") int start, @RequestParam(defaultValue = "10") int page) {
+        return new ResultBean(managerUserInfoService.getList(start, page));
     }
 
     @DeleteMapping("/delete")

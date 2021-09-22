@@ -3,10 +3,10 @@ package com.cn.service.impl.manger;
 import com.cn.beans.manager.ManagerUserInfo;
 import com.cn.dao.manager.ManagerUserInfoDao;
 import com.cn.service.manger.ManagerUserInfoService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ManagerUserInfoServiceImpl implements ManagerUserInfoService {
@@ -22,8 +22,9 @@ public class ManagerUserInfoServiceImpl implements ManagerUserInfoService {
     }
 
     @Override
-    public List<ManagerUserInfo> getList() {
-        return managerUserInfoDao.getList();
+    public PageInfo<ManagerUserInfo> getList(int start, int page) {
+        PageHelper.startPage(start, page);
+        return new PageInfo<>(managerUserInfoDao.getList());
     }
 
     @Override

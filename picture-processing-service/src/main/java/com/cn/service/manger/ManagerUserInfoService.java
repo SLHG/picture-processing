@@ -1,11 +1,10 @@
 package com.cn.service.manger;
 
 import com.cn.beans.manager.ManagerUserInfo;
-
-import java.util.List;
+import com.github.pagehelper.PageInfo;
 
 public interface ManagerUserInfoService {
-    List<ManagerUserInfo> getList();
+    PageInfo<ManagerUserInfo> getList(int start, int page);
 
     int delete(String userName);
 
