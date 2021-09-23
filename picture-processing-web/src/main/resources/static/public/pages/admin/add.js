@@ -30,7 +30,7 @@ layui.use(['form', 'layer', 'http', 'jquery'], function () {
         }
         layer.load();
         $.ajax({
-            url: http.baseApiUrl + '/manager/user/save',
+            url: http.baseApiUrl + '/manager/user/add',
             type: "post",
             dataType: "json",
             contentType: 'application/json',

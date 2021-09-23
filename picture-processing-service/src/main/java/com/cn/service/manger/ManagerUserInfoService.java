@@ -1,5 +1,6 @@
 package com.cn.service.manger;
 
+import com.cn.beans.common.ResultBean;
 import com.cn.beans.manager.ManagerUserInfo;
 import com.github.pagehelper.PageInfo;
 
@@ -8,7 +9,9 @@ public interface ManagerUserInfoService {
 
     int delete(String userName);
 
-    int save(ManagerUserInfo managerUserInfo);
+    ResultBean save(ManagerUserInfo managerUserInfo);
 
     ManagerUserInfo getUserInfoByUserName(String userName);
+
+    ResultBean add(ManagerUserInfo managerUserInfo);
 }

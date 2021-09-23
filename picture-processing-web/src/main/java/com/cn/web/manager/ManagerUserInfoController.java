@@ -32,15 +32,19 @@ public class ManagerUserInfoController {
         return new ResultBean(ResultBean.FAIL_CODE, ResultBean.FAIL_MSG);
     }
 
+    @PostMapping("/add")
+    public ResultBean add(@RequestBody ManagerUserInfo managerUserInfo) {
+        if (managerUserInfo.isBlack()) {
+            return new ResultBean(ResultBean.FAIL_CODE, "参数错误");
+        }
+        return managerUserInfoService.add(managerUserInfo);
+    }
+
     @PostMapping("/save")
     public ResultBean save(@RequestBody ManagerUserInfo managerUserInfo) {
         if (managerUserInfo.isBlack()) {
             return new ResultBean(ResultBean.FAIL_CODE, "参数错误");
         }
-        int num = managerUserInfoService.save(managerUserInfo);
-        if (num > 0) {
-            return new ResultBean();
-        }
-        return new ResultBean(ResultBean.FAIL_CODE, ResultBean.FAIL_MSG);
+        return managerUserInfoService.save(managerUserInfo);
     }
 }
