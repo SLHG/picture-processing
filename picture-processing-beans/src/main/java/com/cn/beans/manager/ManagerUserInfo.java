@@ -13,6 +13,6 @@ public class ManagerUserInfo {
 
 
     public boolean isBlack() {
-        return StringUtils.isBlank(this.getUserName()) || StringUtils.isBlank(this.getPassWord());
+        return StringUtils.isBlank(this.getUserName()) || StringUtils.isBlank(this.getPassWord()) || StringUtils.isBlank(this.getAuthority());
     }
 }

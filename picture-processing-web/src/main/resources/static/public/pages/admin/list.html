@@ -26,10 +26,10 @@
 </div>
 <div class="weadmin-body">
     <div class="weadmin-block">
-        <button class="layui-btn" onclick="WeAdminShow('添加用户','./add.html')"><i
+        <button class="layui-btn" onclick="addInfo()"><i
                 class="layui-icon layui-icon-add-circle-fine"></i>添加
         </button>
-        <span class="fr" style="line-height:40px" id="dataTotal">共有数据：88 条</span>
+        <span class="fr" style="line-height:40px" id="dataTotal">共有数据：0 条</span>
     </div>
     <table class="layui-table">
         <thead>
@@ -40,30 +40,10 @@
             <th>操作</th>
         </thead>
         <tbody id="dataList">
-        <tr>
-            <td id="username">admin</td>
-            <td>超级管理员</td>
-            <td>2017-01-01 11:11:42</td>
-            <td class="td-manage">
-                <a title="编辑" onclick="editInfo(this)" href="javascript:">
-                    <i class="layui-icon layui-icon-edit"></i>
-                </a>
-                <a title="删除" onclick="deleteInfo(this)" href="javascript:">
-                    <i class="layui-icon layui-icon-delete"></i>
-                </a>
-            </td>
-        </tr>
         </tbody>
     </table>
-    <div class="page" id="pageInfo">
-        <div>
-            <a class="prev" href="">&lt;&lt;</a>
-            <a class="num" href="">1</a>
-            <span class="current">2</span>
-            <a class="num" href="">3</a>
-            <a class="num" href="">489</a>
-            <a class="next" href="">&gt;&gt;</a>
-        </div>
+    <div class="page">
+        <div id="pageInfo"></div>
     </div>
 </div>
 <script src="./../../lib/layui/layui.js" type="text/javascript"></script>
@@ -76,34 +56,47 @@
     layui.use(['jquery', 'admin', 'http'], function () {
         let $ = layui.jquery;
         let http = layui.http;
-        window.editInfo =
-            function (obj) {
-                let w = ($(window).width() * 0.9);
-                let h = ($(window).height() - 50);
-                layer.open({
-                    type: 2,
-                    area: [w + 'px', h + 'px'],
-                    fix: false, //不固定
-                    maxmin: true,
-                    shadeClose: true,
-                    shade: 0.4,
-                    title: 'title',
-                    content: './edit.html'
-                });
-            }
+        window.editInfo = function (obj) {
+            let w = ($(window).width() * 0.9);
+            let h = ($(window).height() - 50);
+            layer.open({
+                type: 2,
+                area: [w + 'px', h + 'px'],
+                fix: false, //不固定
+                maxmin: true,
+                shadeClose: true,
+                shade: 0.4,
+                title: 'title',
+                content: './edit.html'
+            });
+        }
+        window.addInfo = function () {
+            let w = ($(window).width() * 0.9);
+            let h = ($(window).height() - 50);
+            layer.open({
+                type: 2,
+                area: [w + 'px', h + 'px'],
+                fix: false, //不固定
+                maxmin: true,
+                shadeClose: true,
+                shade: 0.4,
+                title: '添加用户',
+                content: './add.html'
+            });
+        }
         window.deleteInfo = function (obj) {
             layer.confirm('确认要删除吗？', function () {
                 //发异步删除数据
                 let username = $(obj).parents("tr").children("#username").text();
                 layer.load();
                 $.ajax({
-                    url: http.baseApiUrl + '/manager/user/delete?username=' + username,
+                    url: http.baseApiUrl + '/manager/user/delete?userName=' + username,
                     type: 'DELETE',
                     success: function (res) {
                         layer.closeAll('loading');
                         if (res.rtnCode === '0') {
                             layer.msg('删除成功');
-                            $(obj).parents("tr").remove()
+                            location.replace(location.href);
                         } else {
                             layer.msg(res.rtnMsg);
                         }
@@ -111,12 +104,14 @@
                 })
             });
         }
-
-        $(function () {
-            $.get(http.baseApiUrl + '/manager/user/get?start=1&page=10', function (data) {
+        window.loadPage = function (start) {
+            layer.load();
+            $.get(http.baseApiUrl + '/manager/user/get?start=' + start + '&page=10', function (data) {
                 if (data.rtnCode === '0') {
                     let dataList = $("#dataList");
-                    $.each(data.result.list, function (i, n) {
+                    dataList.text('');
+                    let result = data.result;
+                    $.each(result.list, function (i, n) {
                         dataList.append('<tr><td id="username">' + n.userName + '</td>' +
                             '            <td>' + n.authority + '</td>' +
                             '            <td>' + n.createTime + '</td>' +
@@ -129,11 +124,30 @@
                             '                </a>' +
                             '            </td></tr>');
                     })
-                    $("#dataTotal").text("共有数据："+data.result.total+" 条")
+                    $("#dataTotal").text("共有数据：" + result.total + " 条");
+                    let pageInfo = $("#pageInfo");
+                    pageInfo.text('');
+                    if (result.hasPreviousPage) {
+                        pageInfo.append('<a class="prev" href="javascript:" onclick="loadPage(' + result.prePage + ')">&lt;&lt;</a>');
+                    }
+                    $.each(result.navigatepageNums, function (i, n) {
+                        if (result.pageNum === n) {
+                            pageInfo.append('<span class="current">' + n + '</span>');
+                        } else {
+                            pageInfo.append('<a class="num" href="javascript:" onclick="loadPage(' + n + ')">' + n + '</a>');
+                        }
+                    })
+                    if (result.hasNextPage) {
+                        pageInfo.append('<a class="next" href="javascript:" onclick="loadPage(' + result.nextPage + ')">&gt;&gt;</a>');
+                    }
                 } else {
                     layer.msg(res.rtnMsg);
                 }
-            })
+                layer.closeAll('loading');
+            });
+        }
+        $(function () {
+            loadPage(1)
         })
     })
 </script>
