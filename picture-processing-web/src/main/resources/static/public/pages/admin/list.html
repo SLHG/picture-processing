@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -57,6 +57,8 @@
         let $ = layui.jquery;
         let http = layui.http;
         window.editInfo = function (obj) {
+            let username = $(obj).parents("tr").children("#username").text();
+            let authority = $(obj).parents("tr").children("#authority").text();
             let w = ($(window).width() * 0.9);
             let h = ($(window).height() - 50);
             layer.open({
@@ -66,9 +68,15 @@
                 maxmin: true,
                 shadeClose: true,
                 shade: 0.4,
-                title: 'title',
-                content: './edit.html'
+                title: '修改密码',
+                content: './edit.html',
+                success: function (layero, index) {
+                    let body = layer.getChildFrame('body', index);
+                    body.find("#username").val(username);
+                    body.find("#" + authority).attr('checked', true);
+                }
             });
+
         }
         window.addInfo = function () {
             let w = ($(window).width() * 0.9);
@@ -113,7 +121,7 @@
                     let result = data.result;
                     $.each(result.list, function (i, n) {
                         dataList.append('<tr><td id="username">' + n.userName + '</td>' +
-                            '            <td>' + n.authority + '</td>' +
+                            '            <td id="authority">' + n.authority + '</td>' +
                             '            <td>' + n.createTime + '</td>' +
                             '            <td class="td-manage">\n' +
                             '                <a title="编辑" onclick="editInfo(this)" href="javascript:">' +

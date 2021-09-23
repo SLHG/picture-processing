@@ -38,7 +38,7 @@ layui.use(['form', 'layer', 'http', 'jquery'], function () {
             success: function (res) {
                 layer.closeAll('loading');
                 if (res.rtnCode === '0') {
-                    layer.alert("增加成功", {icon: 6}, function () {
+                    layer.alert("添加成功", {icon: 6}, function () {
                         // 获得frame索引
                         const index = parent.layer.getFrameIndex(window.name);
                         parent.location.reload();
