@@ -1,36 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>picture-processing</artifactId>
         <groupId>com.cn</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>picture-processing-service-impl</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>picture-processing-service-impl</name>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>picture-processing-utils</artifactId>
 
     <properties>
         <java.version>8</java.version>
     </properties>
-
     <dependencies>
         <dependency>
-            <groupId>com.cn</groupId>
-            <artifactId>picture-processing-service</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.cn</groupId>
-            <artifactId>picture-processing-dao</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.cn</groupId>
-            <artifactId>picture-processing-beans</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.cn</groupId>
-            <artifactId>picture-processing-utils</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -87,6 +78,9 @@
             <groupId>dom4j</groupId>
             <artifactId>dom4j</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
     </dependencies>
-
 </project>

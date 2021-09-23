@@ -45,7 +45,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //1、配置权限认证
         http.authorizeRequests()
                 .antMatchers("/wx/*").permitAll()
-                .antMatchers("/manager/user/*").hasRole("ADMIN")
+                .antMatchers("/manager/user/add").hasRole("ADMIN")
+                .antMatchers("/manager/user/delete").hasRole("ADMIN")
+                .antMatchers("/manager/user/get").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/manager/user/save").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/manager/login").permitAll()
                 .anyRequest() //任何其它请求
                 .authenticated() //都需要身份认证

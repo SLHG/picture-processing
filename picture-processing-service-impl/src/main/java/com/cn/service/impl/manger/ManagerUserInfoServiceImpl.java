@@ -69,4 +69,10 @@ public class ManagerUserInfoServiceImpl implements ManagerUserInfoService {
         }
     }
 
+    @Override
+    public PageInfo<ManagerUserInfo> getUserListByUserName(String userName, int start, int page) {
+        PageHelper.startPage(start, page);
+        return new PageInfo<>(managerUserInfoDao.getUserListByUserName(userName));
+    }
+
 }

@@ -14,4 +14,6 @@ public interface ManagerUserInfoService {
     ManagerUserInfo getUserInfoByUserName(String userName);
 
     ResultBean add(ManagerUserInfo managerUserInfo);
+
+    PageInfo<ManagerUserInfo> getUserListByUserName(String userName, int start, int page);
 }

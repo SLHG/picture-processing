@@ -5,6 +5,7 @@
         <result column="user_name" property="userName" jdbcType="VARCHAR"/>
         <result column="pass_word" property="passWord" jdbcType="VARCHAR"/>
         <result column="authority" property="authority" jdbcType="VARCHAR"/>
+        <result column="authority_name" property="authorityName" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="VARCHAR"/>
     </resultMap>
     <insert id="insert">
@@ -28,8 +29,19 @@
         where user_name = #{userName}
     </select>
     <select id="getList" resultMap="BaseResultMap" parameterType="map">
-        select user_name, authority, DATE_FORMAT(create_time, '%Y-%m-%d %H:%i:%s') as create_time
+        select user_name,
+               IF(authority = 'ADMIN', '管理员', '用户')          as authority_name,
+               authority,
+               DATE_FORMAT(create_time, '%Y-%m-%d %H:%i:%s') as create_time
         from manager_user_info
+    </select>
+    <select id="getUserListByUserName" resultMap="BaseResultMap" parameterType="map">
+        select user_name,
+               IF(authority = 'ADMIN', '管理员', '用户')          as authority_name,
+               authority,
+               DATE_FORMAT(create_time, '%Y-%m-%d %H:%i:%s') as create_time
+        from manager_user_info
+        where user_name = #{userName}
     </select>
 
 

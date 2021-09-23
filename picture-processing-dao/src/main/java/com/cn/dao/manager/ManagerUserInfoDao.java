@@ -17,4 +17,6 @@ public interface ManagerUserInfoDao {
     int insert(ManagerUserInfo managerUserInfo);
 
     int update(ManagerUserInfo managerUserInfo);
+
+    List<ManagerUserInfo> getUserListByUserName(@Param("userName") String userName);
 }

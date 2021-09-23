@@ -21,6 +21,7 @@
         <module>picture-processing-service-impl</module>
         <module>picture-processing-dao</module>
         <module>picture-processing-beans</module>
+        <module>picture-processing-utils</module>
     </modules>
     <properties>
         <java.version>8</java.version>
@@ -48,6 +49,11 @@
             <dependency>
                 <groupId>com.cn</groupId>
                 <artifactId>picture-processing-beans</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cn</groupId>
+                <artifactId>picture-processing-utils</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

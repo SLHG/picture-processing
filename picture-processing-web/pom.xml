@@ -33,6 +33,10 @@
             <artifactId>picture-processing-beans</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.cn</groupId>
+            <artifactId>picture-processing-utils</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j</artifactId>
         </dependency>

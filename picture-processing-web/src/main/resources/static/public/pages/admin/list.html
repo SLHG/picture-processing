@@ -58,7 +58,7 @@
         let http = layui.http;
         window.editInfo = function (obj) {
             let username = $(obj).parents("tr").children("#username").text();
-            let authority = $(obj).parents("tr").children("#authority").text();
+            let authority = $(obj).parents("tr").children("#authority").attr("data-authority");
             let w = ($(window).width() * 0.9);
             let h = ($(window).height() - 50);
             layer.open({
@@ -121,7 +121,7 @@
                     let result = data.result;
                     $.each(result.list, function (i, n) {
                         dataList.append('<tr><td id="username">' + n.userName + '</td>' +
-                            '            <td id="authority">' + n.authority + '</td>' +
+                            '            <td id="authority" data-authority="' + n.authority + '">' + n.authorityName + '</td>' +
                             '            <td>' + n.createTime + '</td>' +
                             '            <td class="td-manage">\n' +
                             '                <a title="编辑" onclick="editInfo(this)" href="javascript:">' +

@@ -3,7 +3,9 @@ package com.cn.web.manager;
 import com.cn.beans.common.ResultBean;
 import com.cn.beans.manager.ManagerUserInfo;
 import com.cn.service.manger.ManagerUserInfoService;
+import com.cn.utils.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,7 +22,11 @@ public class ManagerUserInfoController {
 
     @GetMapping("/get")
     public ResultBean getList(@RequestParam(defaultValue = "1") int start, @RequestParam(defaultValue = "10") int page) {
-        return new ResultBean(managerUserInfoService.getList(start, page));
+        if (SecurityUtils.isAdmin(SecurityContextHolder.getContext())) {
+            return new ResultBean(managerUserInfoService.getList(start, page));
+        }
+        String userName = SecurityUtils.getUserName(SecurityContextHolder.getContext());
+        return new ResultBean(managerUserInfoService.getUserListByUserName(userName, start, page));
     }
 
     @DeleteMapping("/delete")
@@ -34,7 +40,7 @@ public class ManagerUserInfoController {
 
     @PostMapping("/add")
     public ResultBean add(@RequestBody ManagerUserInfo managerUserInfo) {
-        if (managerUserInfo.isBlack()) {
+        if (managerUserInfo.checkParams()) {
             return new ResultBean(ResultBean.FAIL_CODE, "参数错误");
         }
         return managerUserInfoService.add(managerUserInfo);
@@ -42,9 +48,18 @@ public class ManagerUserInfoController {
 
     @PostMapping("/save")
     public ResultBean save(@RequestBody ManagerUserInfo managerUserInfo) {
-        if (managerUserInfo.isBlack()) {
+        if (managerUserInfo.checkParams()) {
             return new ResultBean(ResultBean.FAIL_CODE, "参数错误");
         }
+        if (SecurityUtils.isAdmin(SecurityContextHolder.getContext())) {
+            return managerUserInfoService.save(managerUserInfo);
+        }
+        String userName = SecurityUtils.getUserName(SecurityContextHolder.getContext());
+        if (!managerUserInfo.getUserName().equals(userName)) {
+            return new ResultBean(ResultBean.FAIL_CODE, "无权修改");
+        }
+        String userAuthority = SecurityUtils.getUserAuthority(SecurityContextHolder.getContext());
+        managerUserInfo.setAuthority(userAuthority);
         return managerUserInfoService.save(managerUserInfo);
     }
 }
