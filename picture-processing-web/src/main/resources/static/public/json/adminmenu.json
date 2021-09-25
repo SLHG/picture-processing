@@ -29,6 +29,20 @@
           "url": "./pages/admin/list.html"
         }
       ]
+    },
+    {
+      "id": 8,
+      "name": "项目配置",
+      "icon": "&#xe705;",
+      "url": "",
+      "children": [
+        {
+          "id": 9,
+          "name": "配置列表",
+          "icon": "",
+          "url": "./pages/article/list.html"
+        }
+      ]
     }
   ]
 }

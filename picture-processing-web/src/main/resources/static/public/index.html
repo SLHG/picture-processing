@@ -88,15 +88,15 @@
         let $ = layui.jquery,
             admin = layui.admin,
             http = layui.http;
-        $(function () {
-            http.getMenu();
-            admin.tab.tabInit();
-        });
         let userinfo = localStorage.getItem('userinfo');
         let info = JSON.parse(userinfo);
         $("#username").text(info.userName);
         $("#logout").click(function () {
             http.logout();
+        });
+        $(function () {
+            http.getMenu(info);
+            admin.tab.tabInit();
         });
     });
 

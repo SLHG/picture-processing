@@ -37,6 +37,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             return;
         }
         info.setPassWord(null);
+        info.checkIsAdmin();
         writer.write(JSON.toJSONString(new ResultBean(info)));
         writer.flush();
         writer.close();

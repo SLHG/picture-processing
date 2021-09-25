@@ -26,7 +26,7 @@
 </div>
 <div class="weadmin-body">
     <div class="weadmin-block">
-        <button class="layui-btn" onclick="addInfo()"><i
+        <button class="layui-btn" onclick="addInfo()" id="addBtn"><i
                 class="layui-icon layui-icon-add-circle-fine"></i>添加
         </button>
         <span class="fr" style="line-height:40px" id="dataTotal">共有数据：0 条</span>
@@ -56,6 +56,11 @@
     layui.use(['jquery', 'admin', 'http'], function () {
         let $ = layui.jquery;
         let http = layui.http;
+        let userinfo = localStorage.getItem('userinfo');
+        let info = JSON.parse(userinfo);
+        if (!info.admin) {
+            $("#addBtn").hide();
+        }
         window.editInfo = function (obj) {
             let username = $(obj).parents("tr").children("#username").text();
             let authority = $(obj).parents("tr").children("#authority").attr("data-authority");
@@ -74,6 +79,9 @@
                     let body = layer.getChildFrame('body', index);
                     body.find("#username").val(username);
                     body.find("#" + authority).attr('checked', true);
+                    if (!info.admin) {
+                        body.find("#userAuthority").hide();
+                    }
                 }
             });
 
@@ -120,17 +128,29 @@
                     dataList.text('');
                     let result = data.result;
                     $.each(result.list, function (i, n) {
-                        dataList.append('<tr><td id="username">' + n.userName + '</td>' +
-                            '            <td id="authority" data-authority="' + n.authority + '">' + n.authorityName + '</td>' +
-                            '            <td>' + n.createTime + '</td>' +
-                            '            <td class="td-manage">\n' +
-                            '                <a title="编辑" onclick="editInfo(this)" href="javascript:">' +
-                            '                    <i class="layui-icon layui-icon-edit"></i>' +
-                            '                </a>' +
-                            '                <a title="删除" onclick="deleteInfo(this)" href="javascript:">' +
-                            '                    <i class="layui-icon layui-icon-delete"></i>' +
-                            '                </a>' +
-                            '            </td></tr>');
+                        if (info.admin) {
+                            dataList.append('<tr><td id="username">' + n.userName + '</td>' +
+                                '            <td id="authority" data-authority="' + n.authority + '">' + n.authorityName + '</td>' +
+                                '            <td>' + n.createTime + '</td>' +
+                                '            <td class="td-manage">\n' +
+                                '                <a title="编辑" onclick="editInfo(this)" href="javascript:">' +
+                                '                    <i class="layui-icon layui-icon-edit"></i>' +
+                                '                </a>' +
+                                '                <a title="删除" onclick="deleteInfo(this)" href="javascript:">' +
+                                '                    <i class="layui-icon layui-icon-delete"></i>' +
+                                '                </a>' +
+                                '            </td></tr>');
+                        } else {
+                            dataList.append('<tr><td id="username">' + n.userName + '</td>' +
+                                '            <td id="authority" data-authority="' + n.authority + '">' + n.authorityName + '</td>' +
+                                '            <td>' + n.createTime + '</td>' +
+                                '            <td class="td-manage">\n' +
+                                '                <a title="编辑" onclick="editInfo(this)" href="javascript:">' +
+                                '                    <i class="layui-icon layui-icon-edit"></i>' +
+                                '                </a>' +
+                                '</td></tr>');
+                        }
+
                     })
                     $("#dataTotal").text("共有数据：" + result.total + " 条");
                     let pageInfo = $("#pageInfo");

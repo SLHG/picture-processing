@@ -12,6 +12,7 @@ public class ManagerUserInfo {
     private String authority;
     private String authorityName;
     private String createTime;
+    private boolean isAdmin;
 
 
     public boolean checkParams() {
@@ -24,5 +25,9 @@ public class ManagerUserInfo {
         }
         this.setAuthority(authority);
         return false;
+    }
+
+    public void checkIsAdmin() {
+        this.isAdmin = "ADMIN".equals(this.authority);
     }
 }

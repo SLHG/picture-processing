@@ -54,12 +54,18 @@ layui.define(['jquery', 'layer'], function (exports) {
                 }
             })
         },
-        getMenu: function () {
+        getMenu: function (userinfo) {
             let that = this;
             if (!$('#side-nav').length) {
                 return;
             }
-            $.getJSON('json/menu.json', function (res) {
+            let menu;
+            if (userinfo.admin) {
+                menu = 'json/adminmenu.json';
+            } else {
+                menu = 'json/menu.json';
+            }
+            $.getJSON(menu, function (res) {
                 layer.load()
                 if (res.status === 0) {
                     var menuList = res.data;
