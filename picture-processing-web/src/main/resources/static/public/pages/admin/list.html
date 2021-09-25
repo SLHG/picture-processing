@@ -128,7 +128,7 @@
                     dataList.text('');
                     let result = data.result;
                     $.each(result.list, function (i, n) {
-                        if (info.admin) {
+                        if (info.admin && info.userName !== n.userName) {
                             dataList.append('<tr><td id="username">' + n.userName + '</td>' +
                                 '            <td id="authority" data-authority="' + n.authority + '">' + n.authorityName + '</td>' +
                                 '            <td>' + n.createTime + '</td>' +
@@ -169,7 +169,7 @@
                         pageInfo.append('<a class="next" href="javascript:" onclick="loadPage(' + result.nextPage + ')">&gt;&gt;</a>');
                     }
                 } else {
-                    layer.msg(res.rtnMsg);
+                    layer.msg(data.rtnMsg);
                 }
                 layer.closeAll('loading');
             });

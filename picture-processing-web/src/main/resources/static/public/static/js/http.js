@@ -46,8 +46,9 @@ layui.define(['jquery', 'layer'], function (exports) {
                     layer.closeAll('loading');
                     if (res.rtnCode === '0') {
                         localStorage.removeItem('userinfo')
-                        layer.msg('登出成功，即将跳转~');
-                        location.href = './login.html'
+                        layer.msg('登出成功，即将跳转~', function () {
+                            top.location.href = './login.html';
+                        });
                     } else {
                         layer.msg(res.rtnMsg);
                     }

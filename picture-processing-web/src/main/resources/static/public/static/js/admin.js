@@ -451,20 +451,6 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
         sessionStorage.setItem('menu', JSON.stringify(menu));
     }
 
-    /**
-     * 模拟登录
-     * localStorage模拟登录及退出
-     */
-    var login = localStorage.getItem('login');
-    $('.loginout').click(function () {
-        login = 0;
-        localStorage.setItem('login', login);
-    });
-    $('.loginin').click(function () {
-        login = 1;
-        localStorage.setItem('login', login);
-    });
-
     /*
      *Tab加载后刷新
      * 判断是刷新后第一次点击时，刷新frame子页面

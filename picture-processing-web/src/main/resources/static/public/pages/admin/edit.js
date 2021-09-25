@@ -7,9 +7,6 @@ layui.use(['form', 'layer', 'http', 'jquery'], function () {
     let http = layui.http;
     let $ = layui.jquery;
     form.render();
-    window.loadInfo = function (info) {
-        console.log(info)
-    }
     //自定义验证规则
     form.verify({
         pass: [/(.+){8,12}$/, '密码必须8到12位'],
@@ -19,6 +16,8 @@ layui.use(['form', 'layer', 'http', 'jquery'], function () {
             }
         }
     });
+    let logUserInfo = localStorage.getItem('userinfo');
+    let logUser = JSON.parse(logUserInfo);
     //监听提交
     form.on('submit(add)', function (data) {
         let info = {
@@ -42,7 +41,9 @@ layui.use(['form', 'layer', 'http', 'jquery'], function () {
                         parent.location.reload();
                         //关闭当前frame
                         parent.layer.close(index);
-
+                        if (logUser.userName === data.field.username) {
+                            http.logout();
+                        }
                     });
                 } else {
                     layer.msg(res.rtnMsg);

@@ -30,7 +30,11 @@ public class ManagerUserInfoController {
     }
 
     @DeleteMapping("/delete")
-    public ResultBean delete(String userName) {
+    public ResultBean delete(@RequestParam String userName) {
+        String name = SecurityUtils.getUserName(SecurityContextHolder.getContext());
+        if (userName.equals(name)) {
+            return new ResultBean(ResultBean.FAIL_CODE, "无法删除当前登录用户");
+        }
         int num = managerUserInfoService.delete(userName);
         if (num > 0) {
             return new ResultBean();
