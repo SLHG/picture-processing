@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.dao.manager.ManagerPictureProcessingDao">
+    <resultMap id="BaseResultMap" type="com.cn.beans.manager.ManagerPictureProcessingInfo">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="open_id" property="openId" jdbcType="VARCHAR"/>
+        <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
+        <result column="picture_path" property="picturePath" jdbcType="VARCHAR"/>
+        <result column="picture_template_path" property="pictureTemplatePath" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="getList" resultMap="BaseResultMap" parameterType="map">
+        select picture.open_id,
+        nick_name,
+        picture_path,
+        DATE_FORMAT(picture.create_time, '%Y-%m-%d %H:%i:%s') as create_time
+        from picture_processing_info picture
+        left join wx_user_info wx on picture.open_id = wx.open_id
+        <if test="id !=null and id != ''">
+            where   id=
+            #{id}
+        </if>
+    </select>
+</mapper>

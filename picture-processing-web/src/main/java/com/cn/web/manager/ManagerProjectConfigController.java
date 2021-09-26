@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/manager/config")
 @Slf4j
-public class ProjectConfigManagerController {
+public class ManagerProjectConfigController {
 
     final
     ProjectConfigService projectConfigService;
 
-    public ProjectConfigManagerController(ProjectConfigService projectConfigService) {
+    public ManagerProjectConfigController(ProjectConfigService projectConfigService) {
         this.projectConfigService = projectConfigService;
     }
 
