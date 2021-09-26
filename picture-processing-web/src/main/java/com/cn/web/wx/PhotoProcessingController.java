@@ -2,12 +2,15 @@ package com.cn.web.wx;
 
 import com.alibaba.fastjson.JSON;
 import com.baidu.aip.bodyanalysis.AipBodyAnalysis;
+import com.cn.beans.common.RedisKeyPrefix;
 import com.cn.beans.common.ResultBean;
 import com.cn.beans.photo.BodySegBean;
 import com.cn.web.BDFactory;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +28,13 @@ public class PhotoProcessingController {
 
     AipBodyAnalysis aipBodyAnalysis = BDFactory.getAipBodyAnalysis();
 
+    final
+    RedisTemplate<String, Object> redisTemplate;
+
+    public PhotoProcessingController(RedisTemplate<String, Object> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
+
     /**
      * 获取前景图片
      *
@@ -32,7 +42,11 @@ public class PhotoProcessingController {
      * @return 去除前景base64图片
      */
     @PostMapping(value = "/getForeground", produces = "application/json;charset=UTF-8")
-    public ResultBean getForeground(@RequestParam(value = "file") MultipartFile file) {
+    public ResultBean getForeground(@RequestParam(value = "file") MultipartFile file, String openId) {
+        Object sessionKey = redisTemplate.opsForValue().get(RedisKeyPrefix.WX_SESSION_KEY.getKeyPrefix() + openId);
+        if (StringUtils.isBlank((String) sessionKey)) {
+            return new ResultBean(ResultBean.FAIL_CODE, "请重新授权");
+        }
         HashMap<String, String> options = new HashMap<>();
         options.put("type", "foreground");
         try {
