@@ -3,6 +3,8 @@ package com.cn.service.impl.config;
 import com.cn.beans.config.ProjectConfigBean;
 import com.cn.dao.config.ProjectConfigDao;
 import com.cn.service.config.ProjectConfigService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -30,8 +32,9 @@ public class ProjectConfigServiceImpl implements ProjectConfigService {
     }
 
     @Override
-    public List<ProjectConfigBean> getList() {
-        return projectConfigDao.getList();
+    public PageInfo<ProjectConfigBean> getList(int start, int page) {
+        PageHelper.startPage(start, page);
+        return new PageInfo<>(projectConfigDao.getList());
     }
 
     @Override

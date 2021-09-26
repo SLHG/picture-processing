@@ -40,7 +40,7 @@
           "id": 9,
           "name": "配置列表",
           "icon": "",
-          "url": "./pages/article/list.html"
+          "url": "./pages/config/list.html"
         }
       ]
     }

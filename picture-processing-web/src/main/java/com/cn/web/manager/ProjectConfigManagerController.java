@@ -20,8 +20,8 @@ public class ProjectConfigManagerController {
     }
 
     @GetMapping("/get")
-    public ResultBean getConfigList() {
-        return new ResultBean(projectConfigService.getList());
+    public ResultBean getConfigList(@RequestParam(defaultValue = "1") int start, @RequestParam(defaultValue = "10") int page) {
+        return new ResultBean(projectConfigService.getList(start, page));
     }
 
     @DeleteMapping("/delete")
