@@ -43,14 +43,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.headers().frameOptions().disable();//开启运行iframe嵌套页面
         //1、配置权限认证
-        http.authorizeRequests()
-                .antMatchers("/wx/*").permitAll()
+        http.anonymous().and()
+                .authorizeRequests()
+                .antMatchers("/wx/photo/**").permitAll()
                 .antMatchers("/manager/user/add").hasRole("ADMIN")
                 .antMatchers("/manager/user/delete").hasRole("ADMIN")
                 .antMatchers("/manager/user/get").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/manager/user/save").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/manager/login").permitAll()
-                .anyRequest() //任何其它请求
+                .and()
+                .authorizeRequests().anyRequest() //任何其它请求
                 .authenticated() //都需要身份认证
                 .and()
                 //2、登录配置表单认证方式
@@ -100,6 +102,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/public/**");
+        web.ignoring().mvcMatchers("/wx/photo/**");
     }
 
     @Override
