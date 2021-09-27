@@ -19,11 +19,6 @@ public class FileUtils {
     public static final long DEFAULT_MAX_SIZE = 50 * 1024 * 1024;
 
     /**
-     * 默认的文件名最大长度 100
-     */
-    public static final int DEFAULT_FILE_NAME_LENGTH = 100;
-
-    /**
      * 根据文件路径上传
      *
      * @param baseDir 相对应用的基目录
@@ -52,14 +47,6 @@ public class FileUtils {
      */
     public static String upload(String baseDir, MultipartFile multipartFile, String[] allowedExtension)
             throws IOException {
-        String originalFilename = multipartFile.getOriginalFilename();
-        if (originalFilename == null) {
-            return "";
-        }
-        int fileNameLength = originalFilename.length();
-        if (fileNameLength > FileUtils.DEFAULT_FILE_NAME_LENGTH) {
-            throw new RuntimeException();
-        }
         String extension = getExtension(multipartFile);
         assertAllowed(multipartFile, allowedExtension, extension);
         String fileName = extractFilename(extension);
@@ -69,6 +56,21 @@ public class FileUtils {
         }
         multipartFile.transferTo(file);
         return getPathFileName(fileName);
+    }
+
+    /**
+     * 文件删除
+     *
+     * @param baseDir      文件所在基础目录
+     * @param filePathName 文件地址/文件名
+     * @return 是否删除成功
+     */
+    public static boolean delFile(String baseDir, String filePathName) {
+        File file = new File(baseDir + filePathName);
+        if (file.exists()) {
+            return file.delete();
+        }
+        return false;
     }
 
     /**

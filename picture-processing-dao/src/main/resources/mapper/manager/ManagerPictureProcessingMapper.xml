@@ -9,6 +9,10 @@
         <result column="picture_template_path" property="pictureTemplatePath" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="VARCHAR"/>
     </resultMap>
+    <insert id="insert" parameterType="com.cn.beans.manager.ManagerPictureProcessingInfo">
+        insert into picture_processing_info (id, open_id, picture_path, picture_template_path)
+        VALUES (#{id}, #{openId}, #{picturePath}, #{pictureTemplatePath})
+    </insert>
     <select id="getList" resultMap="BaseResultMap" parameterType="map">
         select picture.open_id,
         nick_name,
