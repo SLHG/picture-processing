@@ -155,8 +155,8 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
      */
     !(function () {
         if (!localStorage.getItem('userinfo')) {
-            layer.msg('登录失效，请重新登录~', function () {
-                window.location.href = './login.html';
+            layer.msg('登录失效，请重新登录~', {time: 1000}, function () {
+                top.location.href = './login.html';
             });
         }
         //开启表格多选

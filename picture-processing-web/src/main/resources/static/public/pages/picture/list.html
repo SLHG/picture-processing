@@ -25,15 +25,25 @@
         <i class="layui-icon layui-icon-refresh"></i></a>
 </div>
 <div class="weadmin-body">
+    <div class="layui-row">
+        <form class="layui-form layui-col-md12 we-search">
+            <div class="layui-inline">
+                <label>
+                    <input type="text" name="imageId" placeholder="请输入图片编码" autocomplete="off" class="layui-input">
+                </label>
+            </div>
+            <button class="layui-btn" lay-submit="" lay-filter="search"><i
+                    class="layui-icon layui-icon-search"></i></button>
+        </form>
+    </div>
     <div class="weadmin-block">
         <span class="fr" style="line-height:40px" id="dataTotal">共有数据：0 条</span>
-
     </div>
     <table class="layui-table">
         <thead>
         <tr>
-            <th>id</th>
-            <th>昵称</th>
+            <th>图片编码</th>
+            <th>用户昵称</th>
             <th>图片</th>
             <th>模板</th>
             <th>创建时间</th>
@@ -53,24 +63,30 @@
         base: './../../static/js/'
         , version: '101100'
     });
-    layui.use(['jquery', 'admin', 'http'], function () {
+    layui.use(['jquery', 'admin', 'http', 'form'], function () {
+        let form = layui.form;
+        form.on('submit(search)', function (data) {
+            let imageId = data.field.imageId;
+            searchPage(1, imageId);
+            return false;
+        });
         let $ = layui.jquery;
         let http = layui.http;
         window.downloadInfo = function (obj) {
-            let username = $(obj).parents("tr").children("#username").text();
-            let authority = $(obj).parents("tr").children("#authority").attr("data-authority");
-            let w = ($(window).width() * 0.9);
-            let h = ($(window).height() - 50);
-
-
+            let imageUrl = $(obj).parents("tr").children("#picturePath").children("img").attr("src");
+            downloadImg(imageUrl);
+            let templateSrc = $(obj).parents("tr").children("#pictureTemplatePath").children("img").attr("src");
+            if (templateSrc !== undefined) {
+                downloadImg(templateSrc);
+            }
         }
         window.deleteInfo = function (obj) {
             layer.confirm('确认要删除吗？', function () {
                 //发异步删除数据
-                let username = $(obj).parents("tr").children("#username").text();
+                let id = $(obj).parents("tr").children("#infoId").text();
                 layer.load();
                 $.ajax({
-                    url: http.baseApiUrl + '/manager/user/delete?userName=' + username,
+                    url: http.baseApiUrl + '/manager/picture/delete?id=' + id,
                     type: 'DELETE',
                     success: function (res) {
                         layer.closeAll('loading');
@@ -85,55 +101,73 @@
             });
         }
         window.loadPage = function (start) {
+            searchPage(start, '');
+        }
+        window.searchPage = function (start, imageId) {
             layer.load();
-            $.get(http.baseApiUrl + '/manager/picture/get?start=' + start + '&page=10', function (data) {
+            $.get(http.baseApiUrl + '/manager/picture/get?page=10&start=' + start + '&id=' + imageId, function (data) {
                 if (data.rtnCode === '0') {
                     let dataList = $("#dataList");
                     dataList.text('');
                     let result = data.pageInfo;
-                    let imageBaseUrl = data.result;
-                    $.each(result.list, function (i, n) {
-                        let pictureTemplatePath = n.pictureTemplatePath;
-                        let templateImg = '';
-                        if (pictureTemplatePath !== '' && pictureTemplatePath !== undefined) {
-                            templateImg = '<img alt="图片" width="50px" src="' + imageBaseUrl + pictureTemplatePath + '"/>'
-                        }
-                        dataList.append('<tr><td id="infoId">' + n.id + '</td>' +
-                            '            <td id="nickName">' + n.nickName + '</td>' +
-                            '            <td id="picturePath"><img alt="图片" width="50px" src="' + imageBaseUrl + n.picturePath + '"/></td>' +
-                            '            <td id="pictureTemplatePath">' + templateImg + '</td>' +
-                            '            <td>' + n.createTime + '</td>' +
-                            '            <td class="td-manage">\n' +
-                            '                <a title="下载" onclick="downloadInfo(this)" href="javascript:">' +
-                            '                    <i class="layui-icon layui-icon-download-circle"></i>' +
-                            '                </a>' +
-                            '                <a title="删除" onclick="deleteInfo(this)" href="javascript:">' +
-                            '                    <i class="layui-icon layui-icon-delete"></i>' +
-                            '                </a>' +
-                            '            </td></tr>');
+                    if (result !== undefined) {
+                        let imageBaseUrl = data.result;
+                        $.each(result.list, function (i, n) {
+                            let pictureTemplatePath = n.pictureTemplatePath;
+                            let templateImg = '';
+                            if (pictureTemplatePath !== '' && pictureTemplatePath !== undefined) {
+                                templateImg = '<img alt="图片" width="50px" src="' + imageBaseUrl + pictureTemplatePath + '"/>'
+                            }
+                            dataList.append('<tr><td id="infoId">' + n.id + '</td>' +
+                                '            <td id="nickName">' + n.nickName + '</td>' +
+                                '            <td id="picturePath"><img  alt="图片" width="50px" src="' + imageBaseUrl + n.picturePath + '"/></td>' +
+                                '            <td id="pictureTemplatePath">' + templateImg + '</td>' +
+                                '            <td>' + n.createTime + '</td>' +
+                                '            <td class="td-manage">\n' +
+                                '                <a title="下载" onclick="downloadInfo(this)" href="javascript:">' +
+                                '                    <i class="layui-icon layui-icon-download-circle"></i>' +
+                                '                </a>' +
+                                '                <a title="删除" onclick="deleteInfo(this)" href="javascript:">' +
+                                '                    <i class="layui-icon layui-icon-delete"></i>' +
+                                '                </a>' +
+                                '            </td></tr>');
 
-                    })
-                    $("#dataTotal").text("共有数据：" + result.total + " 条");
-                    let pageInfo = $("#pageInfo");
-                    pageInfo.text('');
-                    if (result.hasPreviousPage) {
-                        pageInfo.append('<a class="prev" href="javascript:" onclick="loadPage(' + result.prePage + ')">&lt;&lt;</a>');
-                    }
-                    $.each(result.navigatepageNums, function (i, n) {
-                        if (result.pageNum === n) {
-                            pageInfo.append('<span class="current">' + n + '</span>');
-                        } else {
-                            pageInfo.append('<a class="num" href="javascript:" onclick="loadPage(' + n + ')">' + n + '</a>');
+                        })
+                        $("#dataTotal").text("共有数据：" + result.total + " 条");
+                        let pageInfo = $("#pageInfo");
+                        pageInfo.text('');
+                        if (result.hasPreviousPage) {
+                            pageInfo.append('<a class="prev" href="javascript:" onclick="loadPage(' + result.prePage + ')">&lt;&lt;</a>');
                         }
-                    })
-                    if (result.hasNextPage) {
-                        pageInfo.append('<a class="next" href="javascript:" onclick="loadPage(' + result.nextPage + ')">&gt;&gt;</a>');
+                        $.each(result.navigatepageNums, function (i, n) {
+                            if (result.pageNum === n) {
+                                pageInfo.append('<span class="current">' + n + '</span>');
+                            } else {
+                                pageInfo.append('<a class="num" href="javascript:" onclick="loadPage(' + n + ')">' + n + '</a>');
+                            }
+                        })
+                        if (result.hasNextPage) {
+                            pageInfo.append('<a class="next" href="javascript:" onclick="loadPage(' + result.nextPage + ')">&gt;&gt;</a>');
+                        }
                     }
                 } else {
                     layer.msg(data.rtnMsg);
                 }
                 layer.closeAll('loading');
             });
+        }
+        window.downloadImg = function (imageUrl) {
+            let x = new XMLHttpRequest();
+            x.open("GET", imageUrl, true);
+            x.responseType = 'blob';
+            x.onload = function () {
+                let url = window.URL.createObjectURL(x.response);
+                let a = document.createElement('a');
+                a.href = url
+                a.download = ''
+                a.click()
+            }
+            x.send();
         }
         $(function () {
             loadPage(1)
