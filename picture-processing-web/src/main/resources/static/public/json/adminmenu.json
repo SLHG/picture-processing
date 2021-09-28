@@ -4,15 +4,15 @@
   "data": [
     {
       "id": 11,
-      "name": "数据管理",
+      "name": "图片管理",
       "icon": "&#xe723;",
       "url": "",
       "children": [
         {
           "id": 12,
-          "name": "数据列表",
+          "name": "图片列表",
           "icon": "",
-          "url": "./pages/order/list.html"
+          "url": "./pages/picture/list.html"
         }
       ]
     },

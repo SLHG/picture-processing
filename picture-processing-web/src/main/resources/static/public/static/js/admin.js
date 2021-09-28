@@ -22,7 +22,6 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
             var aid = $(this).attr("lay-id"); //获取右键时li的lay-id属性
             var popupmenu = $(".rightMenu");
             popupmenu.find("li").attr("data-id", aid);
-            //console.log("popopmenuId:" + popupmenu.find("li").attr("data-id"));
             l = ($(document).width() - e.clientX) < popupmenu.width() ? (e.clientX - popupmenu.width()) : e.clientX;
             t = ($(document).height() - e.clientY) < popupmenu.height() ? (e.clientY - popupmenu.height()) : e.clientY;
             popupmenu.css({
@@ -101,7 +100,6 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
             }, 100);
         },
         tabAdd: function (title, url, id) {
-            console.log('...tabAdd', title, url, id); //sy-log
             var topLayui = parent === self ? layui : top.layui;
             topLayui.element.tabAdd('wenav_tab', {
                 title: title,
@@ -119,10 +117,8 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
             removeStorageMenu(id);
         },
         tabChange: function (id) {
-            console.log('...tabChange', id); //sy-log
             //切换到指定Tab项
             var topLayui = parent === self ? layui : top.layui;
-            console.log('toplayui', parent === self, topLayui); //sy-log
             topLayui.element.tabChange('wenav_tab', id);
         },
         tabDeleteAll: function (ids) { //删除所有
@@ -137,25 +133,21 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
      * frame操作
      * openFrame 打开frame窗口
      */
-    var wframe = {
+    let wframe = {
         openFrame: function (url, title, id) {
-            var parentFrame = $('.weIframe', window.parent.document);
-            var frameList = parentFrame && parentFrame.length ? parentFrame : $('.weIframe');
-
-            for (var i = 0; i < frameList.length; i++) {
-                console.log(frameList.length, i, id);
+            const parentFrame = $('.weIframe', window.parent.document);
+            const frameList = parentFrame && parentFrame.length ? parentFrame : $('.weIframe');
+            for (let i = 0; i < frameList.length; i++) {
                 if (frameList.eq(i).attr('tab-id') == id) {
                     tab.tabChange(id);
                     event.stopPropagation();
                     return;
                 }
             }
-            ;
-
             tab.tabAdd(title, url, id);
             tab.tabChange(id);
         }
-    }
+    };
 
     /*
      * 初始化加载完成执行方法
@@ -248,10 +240,8 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
         var type = $(this).attr("data-type");
         var layId = $(this).attr("data-id")
         if (type == "current") {
-            //console.log("close this:" + layId);
             tab.tabDelete(layId);
         } else if (type == "all") {
-            //console.log("closeAll");
             var tabtitle = $(".layui-tab-title li");
             var ids = new Array();
             $.each(tabtitle, function (i) {
@@ -259,7 +249,6 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
             })
             tab.tabDeleteAll(ids);
         } else if (type == "fresh") {
-            //console.log("fresh:" + layId);
             tab.tabChange($(this).attr("data-id"));
             var othis = $('.layui-tab-title').find('>li[lay-id="' + layId + '"]'),
                 index = othis.parent().children('li').index(othis),
@@ -352,7 +341,6 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
                 //向iframe页的id=house的元素传值  // 参考 https://yq.aliyun.com/ziliao/133150
                 var body = layer.getChildFrame('body', index);
                 body.contents().find("#dataId").val(id);
-                console.log(id);
             },
             error: function (layero, index) {
                 alert("aaa");
@@ -371,7 +359,6 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
      * tab切换监听不能写字初始化加载$(function())方法内，否则不执行
      */
     element.on('tab(wenav_tab)', function (data) {
-        //console.log(this); //当前Tab标题所在的原始DOM元素
         setStorageCurMenu();
     });
     /*
@@ -379,7 +366,6 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
      */
     element.on('tabDelete(wenav_tab)', function (data) {
         var layId = $(this).parent('li').attr('lay-id');
-        //console.log(layId);
         removeStorageMenu(layId);
     });
 
@@ -424,7 +410,6 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
         text = text.split('ဆ')[0];
         var url = $('.layui-tab-content').find('.layui-show').find('.weIframe').attr('src');
         var id = $('.layui-tab-title').find('.layui-this').attr('lay-id');
-        //console.log(text);
         curMenu = {
             title: text,
             url: url,
@@ -456,7 +441,6 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
      * 判断是刷新后第一次点击时，刷新frame子页面
      * */
     window.reloadTab = function (which) {
-        var len = $('.layui-tab-title').children('li').length;
         var layId = $(which).attr('lay-id');
         var i = 1;
         if ($(which).attr('data-bit')) {
@@ -465,7 +449,6 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
             $(which).attr('data-bit', i);
             var frame = $('.weIframe[tab-id=' + layId + ']');
             frame.attr('src', frame.attr('src'));
-            console.log("reload:" + $(which).attr('data-bit'));
         }
     }
     /**

@@ -1,5 +1,6 @@
 package com.cn.beans.common;
 
+import com.github.pagehelper.PageInfo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +17,7 @@ public class ResultBean {
     private String rtnMsg = SUCCESS_MSG;
     private Object result;
     private List<?> resultList;
+    private PageInfo<?> pageInfo;
 
     public ResultBean(String rtnCode, String rtnMsg) {
         this.rtnCode = rtnCode;

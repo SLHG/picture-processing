@@ -105,10 +105,10 @@ public class FileUtils {
     public static void assertAllowed(MultipartFile file, String[] allowedExtension, String extension) {
         long size = file.getSize();
         if (size > DEFAULT_MAX_SIZE) {
-            throw new FileSizeLimitExceededException("超出文件大小限制");
+            throw new FileSizeLimitExceededException("超出文件大小限制" + size);
         }
         if (allowedExtension != null && !isAllowedExtension(extension, allowedExtension)) {
-            throw new InvalidExtensionException("文件扩展字段错误");
+            throw new InvalidExtensionException("文件扩展字段错误" + extension);
         }
     }
 
