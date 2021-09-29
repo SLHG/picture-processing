@@ -137,6 +137,7 @@
                     <exclude>**/*.woff</exclude>
                     <exclude>**/*.woff2</exclude>
                     <exclude>**/*.eot</exclude>
+                    <exclude>**/*.xlsx</exclude>
                 </excludes>
             </resource>
             <resource>
@@ -147,6 +148,7 @@
                     <include>**/*.woff</include>
                     <include>**/*.woff2</include>
                     <include>**/*.eot</include>
+                    <include>**/*.xlsx</include>
                 </includes>
             </resource>
         </resources>

@@ -26,4 +26,17 @@
             #{id}
         </if>
     </select>
+    <select id="getListByIds" resultMap="BaseResultMap" parameterType="map">
+        select id,
+        if(nick_name is null ,'',nick_name) as nick_name,
+        picture_path,
+        picture_template_path,
+        DATE_FORMAT(picture.create_time, '%Y-%m-%d %H:%i:%s') as create_time
+        from picture_processing_info picture
+        left join wx_user_info wx on picture.open_id = wx.open_id
+        where id in (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>)
+    </select>
 </mapper>

@@ -1,5 +1,6 @@
 package com.cn.beans.common;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,5 +27,9 @@ public class ResultBean {
 
     public ResultBean(Object result) {
         this.result = result;
+    }
+
+    public String toJSONString() {
+        return JSON.toJSONString(this);
     }
 }

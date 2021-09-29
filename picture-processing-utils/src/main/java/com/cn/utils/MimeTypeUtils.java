@@ -22,6 +22,7 @@ public class MimeTypeUtils {
             "asf", "rm", "rmvb"};
 
     public static final String[] VIDEO_EXTENSION = {"mp4", "avi", "rmvb"};
+    public static final String[] XLSX_EXTENSION = {"xlsx"};
 
     public static final String[] DEFAULT_ALLOWED_EXTENSION = {
             // 图片
