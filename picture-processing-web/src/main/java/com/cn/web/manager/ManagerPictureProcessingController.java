@@ -43,6 +43,11 @@ public class ManagerPictureProcessingController {
         return getResultList(start, page, id);
     }
 
+    @DeleteMapping("/delete")
+    public ResultBean delete(@RequestParam String id) {
+        return managerPictureProcessingService.delete(id);
+    }
+
     private ResultBean getResultList(int start, int page, String id) {
         PageInfo<ManagerPictureProcessingInfo> list = managerPictureProcessingService.getList(start, page, id);
         String baseUrl = ProjectConfig.PROJECT_CONFIG.get(IMAGE_BASE_URL);

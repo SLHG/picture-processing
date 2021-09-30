@@ -18,4 +18,6 @@ public interface ManagerPictureProcessingDao {
     List<ManagerPictureProcessingInfo> getListByIds(@Param("list") Set<String> idSet);
 
     List<ManagerPictureProcessingInfo> getListLikeId(@Param("id") String id);
+
+    int delete(@Param("id") String id);
 }

@@ -99,6 +99,15 @@ public class ManagerPictureProcessingServiceImpl implements ManagerPictureProces
         return new PageInfo<>(managerPictureProcessingDao.getListLikeId(id));
     }
 
+    @Override
+    public ResultBean delete(String id) {
+        int i = managerPictureProcessingDao.delete(id);
+        if (i > 0) {
+            return new ResultBean();
+        }
+        return new ResultBean(ResultBean.FAIL_CODE, ResultBean.FAIL_MSG);
+    }
+
     public static void writeExcelFile(List<String> titles, OutputStream outputStream, List<String[]> dataList) throws IOException {
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet();

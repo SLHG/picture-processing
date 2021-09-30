@@ -1,5 +1,6 @@
 package com.cn.service.manger;
 
+import com.cn.beans.common.ResultBean;
 import com.cn.beans.manager.ManagerPictureProcessingInfo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,4 +14,6 @@ public interface ManagerPictureProcessingService {
     void download(MultipartFile file, HttpServletResponse response) throws IOException;
 
     PageInfo<ManagerPictureProcessingInfo> getListLikeId(int start, int page, String id);
+
+    ResultBean delete(String id);
 }

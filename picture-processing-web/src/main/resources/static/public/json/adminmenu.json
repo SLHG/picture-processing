@@ -17,6 +17,20 @@
       ]
     },
     {
+      "id": 15,
+      "name": "相框管理",
+      "icon": "&#xe723;",
+      "url": "",
+      "children": [
+        {
+          "id": 16,
+          "name": "相框列表",
+          "icon": "",
+          "url": "./pages/pictureframe/list.html"
+        }
+      ]
+    },
+    {
       "id": 13,
       "name": "管理员配置",
       "icon": "&#xe726;",

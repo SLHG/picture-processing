@@ -13,6 +13,12 @@
         insert into picture_processing_info (id, open_id, picture_path, picture_template_path)
         VALUES (#{id}, #{openId}, #{picturePath}, #{pictureTemplatePath})
     </insert>
+    <delete id="delete" parameterType="map">
+        delete
+        from picture_processing_info
+        where id = #{id}
+        limit 1
+    </delete>
     <select id="getList" resultMap="BaseResultMap" parameterType="map">
         select id,
         if(nick_name is null ,'',nick_name) as nick_name,
@@ -25,6 +31,7 @@
             where   id=
             #{id}
         </if>
+        order by picture.create_time desc
     </select>
     <select id="getListByIds" resultMap="BaseResultMap" parameterType="map">
         select id,
@@ -38,6 +45,7 @@
         <foreach collection="list" item="item" separator=",">
             #{item}
         </foreach>)
+        order by picture.create_time desc
     </select>
     <select id="getListLikeId" resultMap="BaseResultMap" parameterType="map">
         select id,
@@ -53,5 +61,6 @@
             '%'
             )
         </if>
+        order by picture.create_time desc
     </select>
 </mapper>
