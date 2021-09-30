@@ -34,7 +34,7 @@ public class ManagerPictureProcessingController {
     @GetMapping("/get")
     public ResultBean getList(@RequestParam(defaultValue = "1") int start, @RequestParam(defaultValue = "10") int page, String id) {
         if (SecurityUtils.isAdmin(SecurityContextHolder.getContext())) {
-            return getResultList(start, page, id);
+            return getResultListLikeId(start, page, id);
         }
         //非管理员只能根据id进行数据查询,不展示数据列表
         if (StringUtils.isBlank(id)) {
@@ -45,6 +45,16 @@ public class ManagerPictureProcessingController {
 
     private ResultBean getResultList(int start, int page, String id) {
         PageInfo<ManagerPictureProcessingInfo> list = managerPictureProcessingService.getList(start, page, id);
+        String baseUrl = ProjectConfig.PROJECT_CONFIG.get(IMAGE_BASE_URL);
+        ResultBean result = new ResultBean();
+        result.setPageInfo(list);
+        result.setResult(baseUrl);
+        return result;
+    }
+
+    private ResultBean getResultListLikeId(int start, int page, String id) {
+        //根据id模糊查询
+        PageInfo<ManagerPictureProcessingInfo> list = managerPictureProcessingService.getListLikeId(start, page, id);
         String baseUrl = ProjectConfig.PROJECT_CONFIG.get(IMAGE_BASE_URL);
         ResultBean result = new ResultBean();
         result.setPageInfo(list);

@@ -16,4 +16,6 @@ public interface ManagerPictureProcessingDao {
     int insert(ManagerPictureProcessingInfo info);
 
     List<ManagerPictureProcessingInfo> getListByIds(@Param("list") Set<String> idSet);
+
+    List<ManagerPictureProcessingInfo> getListLikeId(@Param("id") String id);
 }

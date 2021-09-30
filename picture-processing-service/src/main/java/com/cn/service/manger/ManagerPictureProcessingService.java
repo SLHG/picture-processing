@@ -11,4 +11,6 @@ public interface ManagerPictureProcessingService {
     PageInfo<ManagerPictureProcessingInfo> getList(int start, int page, String id);
 
     void download(MultipartFile file, HttpServletResponse response) throws IOException;
+
+    PageInfo<ManagerPictureProcessingInfo> getListLikeId(int start, int page, String id);
 }

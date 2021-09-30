@@ -1,6 +1,7 @@
 package com.cn.service.impl.wx;
 
 import cn.hutool.core.util.IdUtil;
+import com.cn.beans.common.Constant;
 import com.cn.beans.common.ResultBean;
 import com.cn.beans.manager.ManagerPictureProcessingInfo;
 import com.cn.dao.manager.ManagerPictureProcessingDao;
@@ -21,8 +22,6 @@ import java.io.IOException;
 @Slf4j
 public class PictureProcessingServiceImpl implements PictureProcessingService {
 
-    private static final String PHOTO_UPLOAD_BASE_DIR = "photo_upload_base_dir";
-
     final
     ManagerPictureProcessingDao managerPictureProcessingDao;
 
@@ -32,13 +31,13 @@ public class PictureProcessingServiceImpl implements PictureProcessingService {
 
     @Override
     public ResultBean uploadFile(MultipartFile file, String openId) {
-        String baseDir = ProjectConfig.PROJECT_CONFIG.get(PHOTO_UPLOAD_BASE_DIR);
+        String baseDir = ProjectConfig.PROJECT_CONFIG.get(Constant.PHOTO_UPLOAD_BASE_DIR);
         if (StringUtils.isBlank(baseDir)) {
             return new ResultBean(ResultBean.FAIL_CODE, "请设置文件上传基础目录");
         }
         String filePathName;
         try {
-            filePathName = FileUtils.upload(baseDir, file, MimeTypeUtils.IMAGE_EXTENSION);
+            filePathName = FileUtils.upload(baseDir, file, MimeTypeUtils.PNG_JPG_EXTENSION);
         } catch (FileSizeLimitExceededException e) {
             log.error("uploadFile=>文件大小超出最大限制", e);
             return new ResultBean(ResultBean.FAIL_CODE, "文件大小超出最大限制");

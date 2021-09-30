@@ -1,18 +1,27 @@
 package com.cn.service.impl.manger;
 
+import com.cn.beans.common.Constant;
 import com.cn.beans.common.ResultBean;
 import com.cn.beans.manager.ManagerPictureProcessingInfo;
 import com.cn.dao.manager.ManagerPictureProcessingDao;
+import com.cn.service.config.ProjectConfig;
 import com.cn.service.manger.ManagerPictureProcessingService;
 import com.cn.utils.ExcelUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.xssf.usermodel.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -66,19 +75,64 @@ public class ManagerPictureProcessingServiceImpl implements ManagerPictureProces
         }
         List<ManagerPictureProcessingInfo> result = managerPictureProcessingDao.getListByIds(idSet);
         List<String[]> data = new ArrayList<>();
+        String baseDir = ProjectConfig.PROJECT_CONFIG.get(Constant.PHOTO_UPLOAD_BASE_DIR);
         for (ManagerPictureProcessingInfo info : result) {
             String[] strings = new String[5];
             strings[0] = info.getId();
             strings[1] = info.getNickName();
-            strings[2] = info.getPicturePath();
-            strings[3] = info.getPictureTemplatePath();
+            String picturePath = info.getPicturePath();
+            strings[2] = StringUtils.isBlank(picturePath) ? "" : baseDir + picturePath;
+            String pictureTemplatePath = info.getPictureTemplatePath();
+            strings[3] = StringUtils.isBlank(pictureTemplatePath) ? "" : baseDir + pictureTemplatePath;
             strings[4] = info.getCreateTime();
             data.add(strings);
         }
         response.reset();
         response.addHeader("Content-Disposition", "attachment; filename=data.xlsx");
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
-        ExcelUtils.writeExcelFile(TITLES, response.getOutputStream(), data);
+        writeExcelFile(TITLES, response.getOutputStream(), data);
+    }
+
+    @Override
+    public PageInfo<ManagerPictureProcessingInfo> getListLikeId(int start, int page, String id) {
+        PageHelper.startPage(start, page);
+        return new PageInfo<>(managerPictureProcessingDao.getListLikeId(id));
+    }
+
+    public static void writeExcelFile(List<String> titles, OutputStream outputStream, List<String[]> dataList) throws IOException {
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet();
+        XSSFDrawing drawingPatriarch = sheet.createDrawingPatriarch();
+        XSSFRow rowTitle = sheet.createRow(0);
+        for (int i = 0; i < titles.size(); i++) {
+            rowTitle.createCell(i).setCellValue(titles.get(i));
+        }
+        int rowIndex = 1;
+        for (String[] data : dataList) {
+            XSSFRow rowData = sheet.createRow(rowIndex);
+            for (int i = 0; i < data.length; i++) {
+                String s = data[i];
+                if (i == 2 || i == 3) {
+                    if (!StringUtils.isBlank(s)) {
+                        //创建文件
+                        File file = new File(s);
+                        //获取扩展名
+                        String extension = FilenameUtils.getExtension(file.getName());
+                        //读取图片内容
+                        BufferedImage bufferedImage = ImageIO.read(file);
+                        ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+                        ImageIO.write(bufferedImage, extension, byteArray);
+                        XSSFClientAnchor anchor = new XSSFClientAnchor(0, 0, 0, 0, (short) i, rowIndex, (short) (i + 1), rowIndex + 1);
+                        drawingPatriarch.createPicture(anchor, workbook.addPicture(byteArray.toByteArray(), ExcelUtils.png_jpg_image_type.get(extension)));
+                        continue;
+                    }
+                }
+                XSSFCell cell = rowData.createCell(i);
+                cell.setCellValue(s);
+            }
+            rowIndex++;
+        }
+        workbook.write(outputStream);
     }
 
 }

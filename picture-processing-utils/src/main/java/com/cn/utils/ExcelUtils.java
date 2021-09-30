@@ -16,7 +16,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ExcelUtils {
 
@@ -92,5 +94,11 @@ public class ExcelUtils {
         }
         workbook.write(outputStream);
     }
+
+    public static Map<String, Integer> png_jpg_image_type = new HashMap<String, Integer>() {{
+        put("jpg", 5);
+        put("jpeg", 5);
+        put("png", 6);
+    }};
 
 }
