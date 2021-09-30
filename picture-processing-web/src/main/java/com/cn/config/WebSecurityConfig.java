@@ -45,9 +45,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //1、配置权限认证
         http.anonymous().and()
                 .authorizeRequests()
-                .antMatchers("/wx/photo/**").permitAll()
+                .antMatchers("/wx/**").permitAll()
                 .antMatchers("/manager/user/add").hasRole("ADMIN")
                 .antMatchers("/manager/user/delete").hasRole("ADMIN")
+                .antMatchers("/manager/config/**").hasRole("ADMIN")
+                .antMatchers("/manager/frame/**").hasRole("ADMIN")
                 .antMatchers("/manager/user/get").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/manager/user/save").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/manager/login").permitAll()
@@ -100,9 +102,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/public/**");
-        web.ignoring().mvcMatchers("/wx/photo/**");
+        web.ignoring().mvcMatchers("/wx/**");
     }
 
     @Override
