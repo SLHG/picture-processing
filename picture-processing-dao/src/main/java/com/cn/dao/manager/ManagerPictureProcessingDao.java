@@ -20,4 +20,6 @@ public interface ManagerPictureProcessingDao {
     List<ManagerPictureProcessingInfo> getListLikeId(@Param("id") String id);
 
     int delete(@Param("id") String id);
+
+    ManagerPictureProcessingInfo selectById(@Param("id") String id);
 }

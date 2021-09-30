@@ -2,10 +2,10 @@ package com.cn.service.impl.manger;
 
 import com.cn.beans.common.Constant;
 import com.cn.beans.common.ResultBean;
-import com.cn.beans.manager.ManagerPictureFrameInfo;
-import com.cn.dao.manager.ManagerPictureFrameDao;
+import com.cn.beans.manager.ManagerPicturePendantInfo;
+import com.cn.dao.manager.ManagerPicturePendantDao;
 import com.cn.service.config.ProjectConfig;
-import com.cn.service.manger.ManagerPictureFrameService;
+import com.cn.service.manger.ManagerPicturePendantService;
 import com.cn.utils.FileSizeLimitExceededException;
 import com.cn.utils.FileUtils;
 import com.cn.utils.InvalidExtensionException;
@@ -21,25 +21,25 @@ import java.io.IOException;
 
 @Service
 @Slf4j
-public class ManagerPictureFrameServiceImpl implements ManagerPictureFrameService {
+public class ManagerPicturePendantServiceImpl implements ManagerPicturePendantService {
 
     final
-    ManagerPictureFrameDao managerPictureFrameDao;
+    ManagerPicturePendantDao managerPicturePendantDao;
 
 
-    public ManagerPictureFrameServiceImpl(ManagerPictureFrameDao managerPictureFrameDao) {
-        this.managerPictureFrameDao = managerPictureFrameDao;
+    public ManagerPicturePendantServiceImpl(ManagerPicturePendantDao managerPicturePendantDao) {
+        this.managerPicturePendantDao = managerPicturePendantDao;
     }
 
     @Override
-    public PageInfo<ManagerPictureFrameInfo> getList(int start, int page) {
+    public PageInfo<ManagerPicturePendantInfo> getList(int start, int page) {
         PageHelper.startPage(start, page);
-        return new PageInfo<>(managerPictureFrameDao.getList());
+        return new PageInfo<>(managerPicturePendantDao.getList());
     }
 
     @Override
-    public ResultBean uploadFile(MultipartFile file, String frameName) {
-        String baseDir = ProjectConfig.PROJECT_CONFIG.get(Constant.FRAME_UPLOAD_BASE_DIR);
+    public ResultBean uploadFile(MultipartFile file, String pendantName) {
+        String baseDir = ProjectConfig.PROJECT_CONFIG.get(Constant.PENDANT_UPLOAD_BASE_DIR);
         if (StringUtils.isBlank(baseDir)) {
             return new ResultBean(ResultBean.FAIL_CODE, "请设置文件上传基础目录");
         }
@@ -59,10 +59,10 @@ public class ManagerPictureFrameServiceImpl implements ManagerPictureFrameServic
         if (StringUtils.isBlank(filePathName)) {
             return new ResultBean(ResultBean.FAIL_CODE, "上传失败");
         }
-        ManagerPictureFrameInfo info = new ManagerPictureFrameInfo();
+        ManagerPicturePendantInfo info = new ManagerPicturePendantInfo();
         info.setPicturePath(filePathName);
-        info.setFrameName(frameName);
-        int i = managerPictureFrameDao.insert(info);
+        info.setPendantName(pendantName);
+        int i = managerPicturePendantDao.insert(info);
         if (i > 0) {
             return new ResultBean();
         } else {
@@ -73,18 +73,18 @@ public class ManagerPictureFrameServiceImpl implements ManagerPictureFrameServic
 
     @Override
     public ResultBean delete(String id) {
-        ManagerPictureFrameInfo info = managerPictureFrameDao.selectById(id);
+        ManagerPicturePendantInfo info = managerPicturePendantDao.selectById(id);
         if (info == null) {
             return new ResultBean(ResultBean.FAIL_CODE, "数据不存在");
         }
         if (!StringUtils.isBlank(info.getPicturePath())) {
-            String baseDir = ProjectConfig.PROJECT_CONFIG.get(Constant.FRAME_UPLOAD_BASE_DIR);
+            String baseDir = ProjectConfig.PROJECT_CONFIG.get(Constant.PENDANT_UPLOAD_BASE_DIR);
             boolean delFile = FileUtils.delFile(baseDir, info.getPicturePath());
             if (!delFile) {
                 return new ResultBean(ResultBean.FAIL_CODE, "删除失败");
             }
         }
-        int i = managerPictureFrameDao.delete(id);
+        int i = managerPicturePendantDao.delete(id);
         if (i > 0) {
             return new ResultBean();
         }

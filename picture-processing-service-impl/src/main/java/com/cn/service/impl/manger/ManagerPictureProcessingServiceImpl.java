@@ -7,6 +7,7 @@ import com.cn.dao.manager.ManagerPictureProcessingDao;
 import com.cn.service.config.ProjectConfig;
 import com.cn.service.manger.ManagerPictureProcessingService;
 import com.cn.utils.ExcelUtils;
+import com.cn.utils.FileUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.io.FilenameUtils;
@@ -101,6 +102,23 @@ public class ManagerPictureProcessingServiceImpl implements ManagerPictureProces
 
     @Override
     public ResultBean delete(String id) {
+        ManagerPictureProcessingInfo info = managerPictureProcessingDao.selectById(id);
+        if (info == null) {
+            return new ResultBean(ResultBean.FAIL_CODE, "数据不存在");
+        }
+        String baseDir = ProjectConfig.PROJECT_CONFIG.get(Constant.PHOTO_UPLOAD_BASE_DIR);
+        if (!StringUtils.isBlank(info.getPicturePath())) {
+            boolean delFile = FileUtils.delFile(baseDir, info.getPicturePath());
+            if (!delFile) {
+                return new ResultBean(ResultBean.FAIL_CODE, "删除失败");
+            }
+        }
+        if (!StringUtils.isBlank(info.getPictureTemplatePath())) {
+            boolean delFile = FileUtils.delFile(baseDir, info.getPictureTemplatePath());
+            if (!delFile) {
+                return new ResultBean(ResultBean.FAIL_CODE, "删除失败");
+            }
+        }
         int i = managerPictureProcessingDao.delete(id);
         if (i > 0) {
             return new ResultBean();

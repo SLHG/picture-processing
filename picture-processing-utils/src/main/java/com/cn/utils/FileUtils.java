@@ -69,8 +69,9 @@ public class FileUtils {
         File file = new File(baseDir + filePathName);
         if (file.exists()) {
             return file.delete();
+        } else {
+            return true;
         }
-        return false;
     }
 
     /**

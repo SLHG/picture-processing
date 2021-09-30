@@ -15,4 +15,6 @@ public interface ManagerPictureFrameDao {
     int insert(ManagerPictureFrameInfo info);
 
     int delete(@Param("id") String id);
+
+    ManagerPictureFrameInfo selectById(@Param("id") String id);
 }

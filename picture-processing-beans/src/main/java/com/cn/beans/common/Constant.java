@@ -11,4 +11,6 @@ public class Constant {
     public static final String PHOTO_UPLOAD_BASE_DIR = "photo_upload_base_dir";
     //相框上传保存基路径
     public static final String FRAME_UPLOAD_BASE_DIR = "frame_upload_base_dir";
+    //挂件上传保存基础路径
+    public static final String PENDANT_UPLOAD_BASE_DIR = "pendant_upload_base_dir";
 }

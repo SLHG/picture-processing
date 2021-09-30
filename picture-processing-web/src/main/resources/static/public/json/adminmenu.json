@@ -31,6 +31,20 @@
       ]
     },
     {
+      "id": 17,
+      "name": "挂件管理",
+      "icon": "&#xe723;",
+      "url": "",
+      "children": [
+        {
+          "id": 18,
+          "name": "挂件列表",
+          "icon": "",
+          "url": "./pages/picturependant/list.html"
+        }
+      ]
+    },
+    {
       "id": 13,
       "name": "管理员配置",
       "icon": "&#xe726;",
