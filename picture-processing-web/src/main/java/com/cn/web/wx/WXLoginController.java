@@ -45,7 +45,7 @@ public class WXLoginController {
         }
         int num = wxUserInfoService.save(info);
         if (num > 0) {
-            new ResultBean();
+            return new ResultBean();
         }
         return new ResultBean(ResultBean.FAIL_CODE, "更新失败");
     }

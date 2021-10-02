@@ -22,7 +22,7 @@ public class ManagerPictureFrameController {
     /**
      * 默认大小 2M
      */
-    public static final long DEFAULT_MAX_SIZE = 5 * 1024 * 1024;
+    public static final long DEFAULT_MAX_SIZE = 10 * 1024 * 1024;
 
     public ManagerPictureFrameController(ManagerPictureFrameService managerPictureFrameService) {
         this.managerPictureFrameService = managerPictureFrameService;
