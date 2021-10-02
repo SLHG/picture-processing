@@ -1,18 +1,10 @@
-/*
- * @Author: https://github.com/WangEn
- * @Author: https://gitee.com/lovetime/
- * @Date:   2020-07-29
- * @lastModify 2020-07-30 16:45:40
- * +----------------------------------------------------------------------
- * | Weadmin [ 后台管理模板 ]
- * | 基于Layui http://www.layui.com/
- * +----------------------------------------------------------------------
- */
+
 layui.define(['jquery', 'layer'], function (exports) {
     let $ = layui.jquery,
         layer = layui.layer;
 
-    let baseApiUrl = 'http://localhost:8081/service';
+    //let baseApiUrl = 'http://localhost:8081/service';
+    let baseApiUrl = 'http://www.shazhibin.top/service';
 
     let request = {
         baseApiUrl: baseApiUrl,
