@@ -124,7 +124,7 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>wx-project</finalName>
+        <finalName>picture-processing</finalName>
         <filters>
             <filter>${user.dir}/config/${project.profile}.properties</filter>
         </filters>
