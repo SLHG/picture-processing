@@ -1,5 +1,6 @@
 package com.cn.web.manager;
 
+import com.cn.beans.common.Constant;
 import com.cn.beans.common.ResultBean;
 import com.cn.beans.manager.ManagerPictureFrameInfo;
 import com.cn.service.config.ProjectConfig;
@@ -17,13 +18,6 @@ public class ManagerPictureFrameController {
     final
     ManagerPictureFrameService managerPictureFrameService;
 
-    private static final String IFRAME_BASE_URL = "iframe_base_url";
-
-    /**
-     * 默认大小 2M
-     */
-    public static final long DEFAULT_MAX_SIZE = 10 * 1024 * 1024;
-
     public ManagerPictureFrameController(ManagerPictureFrameService managerPictureFrameService) {
         this.managerPictureFrameService = managerPictureFrameService;
     }
@@ -31,7 +25,7 @@ public class ManagerPictureFrameController {
     @GetMapping("/get")
     public ResultBean getList(@RequestParam(defaultValue = "1") int start, @RequestParam(defaultValue = "10") int page) {
         PageInfo<ManagerPictureFrameInfo> list = managerPictureFrameService.getList(start, page);
-        String baseUrl = ProjectConfig.PROJECT_CONFIG.get(IFRAME_BASE_URL);
+        String baseUrl = ProjectConfig.PROJECT_CONFIG.get(Constant.IFRAME_BASE_URL.getValue(String.class));
         ResultBean result = new ResultBean();
         result.setPageInfo(list);
         result.setResult(baseUrl);
@@ -62,7 +56,7 @@ public class ManagerPictureFrameController {
         if (file == null) {
             return new ResultBean(ResultBean.FAIL_CODE, "文件缺失");
         }
-        if (file.getSize() > DEFAULT_MAX_SIZE) {
+        if (file.getSize() > Constant.DEFAULT_MAX_SIZE.getValue(int.class)) {
             return new ResultBean(ResultBean.FAIL_CODE, "图片超出最大可上传限制");
         }
         return null;

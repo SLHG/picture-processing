@@ -1,6 +1,7 @@
 package com.cn.service.impl.wx;
 
 import com.alibaba.fastjson.JSON;
+import com.cn.beans.common.Constant;
 import com.cn.beans.common.RedisKeyPrefix;
 import com.cn.beans.common.ResultBean;
 import com.cn.beans.wx.WXLoginResponse;
@@ -43,12 +44,12 @@ public class WXUserInfoServiceImpl implements WXUserInfoService {
     public ResultBean login(String code) {
         List<NameValuePair> list = new ArrayList<>();
         //拼装请求微信获取openid接口的参数
-        list.add(new BasicNameValuePair("appid", ProjectConfig.PROJECT_CONFIG.get("wx_appid")));
-        list.add(new BasicNameValuePair("secret", ProjectConfig.PROJECT_CONFIG.get("wx_secret")));
+        list.add(new BasicNameValuePair("appid", ProjectConfig.PROJECT_CONFIG.get(Constant.WX_APPID.getValue(String.class))));
+        list.add(new BasicNameValuePair("secret", ProjectConfig.PROJECT_CONFIG.get(Constant.WX_SECRET.getValue(String.class))));
         list.add(new BasicNameValuePair("js_code", code));
         list.add(new BasicNameValuePair("grant_type", "authorization_code"));
         //调用接口获取openid
-        String response = HttpUtils.httpGet(ProjectConfig.PROJECT_CONFIG.get("wx_login_url"), list);
+        String response = HttpUtils.httpGet(ProjectConfig.PROJECT_CONFIG.get(Constant.WX_LOGIN_URL.getValue(String.class)), list);
         WXLoginResponse wxLoginResponse = JSON.parseObject(response, WXLoginResponse.class);
         log.info("login=>登录返回结果:{}", wxLoginResponse);
         if (WX_RESPONSE_SUCCESS != wxLoginResponse.getErrcode()) {

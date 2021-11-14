@@ -76,7 +76,7 @@ public class ManagerPictureProcessingServiceImpl implements ManagerPictureProces
         }
         List<ManagerPictureProcessingInfo> result = managerPictureProcessingDao.getListByIds(idSet);
         List<String[]> data = new ArrayList<>();
-        String baseDir = ProjectConfig.PROJECT_CONFIG.get(Constant.PHOTO_UPLOAD_BASE_DIR);
+        String baseDir = ProjectConfig.PROJECT_CONFIG.get(Constant.PHOTO_UPLOAD_BASE_DIR.getValue(String.class));
         for (ManagerPictureProcessingInfo info : result) {
             String[] strings = new String[5];
             strings[0] = info.getId();
@@ -106,7 +106,7 @@ public class ManagerPictureProcessingServiceImpl implements ManagerPictureProces
         if (info == null) {
             return new ResultBean(ResultBean.FAIL_CODE, "数据不存在");
         }
-        String baseDir = ProjectConfig.PROJECT_CONFIG.get(Constant.PHOTO_UPLOAD_BASE_DIR);
+        String baseDir = ProjectConfig.PROJECT_CONFIG.get(Constant.PHOTO_UPLOAD_BASE_DIR.getValue(String.class));
         if (!StringUtils.isBlank(info.getPicturePath())) {
             boolean delFile = FileUtils.delFile(baseDir, info.getPicturePath());
             if (!delFile) {

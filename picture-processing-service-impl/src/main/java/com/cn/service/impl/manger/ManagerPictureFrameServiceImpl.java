@@ -39,7 +39,7 @@ public class ManagerPictureFrameServiceImpl implements ManagerPictureFrameServic
 
     @Override
     public ResultBean uploadFile(MultipartFile file, String frameName) {
-        String baseDir = ProjectConfig.PROJECT_CONFIG.get(Constant.FRAME_UPLOAD_BASE_DIR);
+        String baseDir = ProjectConfig.PROJECT_CONFIG.get(Constant.FRAME_UPLOAD_BASE_DIR.getValue(String.class));
         if (StringUtils.isBlank(baseDir)) {
             return new ResultBean(ResultBean.FAIL_CODE, "请设置文件上传基础目录");
         }
@@ -78,7 +78,7 @@ public class ManagerPictureFrameServiceImpl implements ManagerPictureFrameServic
             return new ResultBean(ResultBean.FAIL_CODE, "数据不存在");
         }
         if (!StringUtils.isBlank(info.getPicturePath())) {
-            String baseDir = ProjectConfig.PROJECT_CONFIG.get(Constant.FRAME_UPLOAD_BASE_DIR);
+            String baseDir = ProjectConfig.PROJECT_CONFIG.get(Constant.FRAME_UPLOAD_BASE_DIR.getValue(String.class));
             boolean delFile = FileUtils.delFile(baseDir, info.getPicturePath());
             if (!delFile) {
                 return new ResultBean(ResultBean.FAIL_CODE, "删除失败");

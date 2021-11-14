@@ -2,6 +2,7 @@ package com.cn.web.wx;
 
 import com.alibaba.fastjson.JSON;
 import com.baidu.aip.bodyanalysis.AipBodyAnalysis;
+import com.cn.beans.common.Constant;
 import com.cn.beans.common.RedisKeyPrefix;
 import com.cn.beans.common.ResultBean;
 import com.cn.beans.photo.BodySegBean;
@@ -13,13 +14,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.*;
 import java.util.HashMap;
 
 @RestController
@@ -35,11 +32,6 @@ public class PictureProcessingController {
     final
     PictureProcessingService pictureProcessingService;
 
-    /**
-     * 默认大小 10M
-     */
-    public static final long DEFAULT_MAX_SIZE = 10 * 1024 * 1024;
-
     public PictureProcessingController(RedisTemplate<String, Object> redisTemplate, PictureProcessingService pictureProcessingService) {
         this.redisTemplate = redisTemplate;
         this.pictureProcessingService = pictureProcessingService;
@@ -51,7 +43,7 @@ public class PictureProcessingController {
      * @param file 图片文件
      * @return 去除前景base64图片
      */
-    @PostMapping(value = "/getForeground", produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/getForeground")
     public ResultBean getForeground(@RequestParam(value = "file") MultipartFile file, String openId) {
         Object sessionKey = redisTemplate.opsForValue().get(RedisKeyPrefix.WX_SESSION_KEY.getKeyPrefix() + openId);
         if (StringUtils.isBlank((String) sessionKey)) {
@@ -81,10 +73,10 @@ public class PictureProcessingController {
         if (file == null) {
             return new ResultBean(ResultBean.FAIL_CODE, "文件缺失");
         }
-        String maxSize = ProjectConfig.PROJECT_CONFIG.get("upload_file_max_size");
+        String maxSize = ProjectConfig.PROJECT_CONFIG.get(Constant.UPLOAD_FILE_MAX_SIZE.getValue(String.class));
         long size;
         if (StringUtils.isBlank(maxSize)) {
-            size = DEFAULT_MAX_SIZE;
+            size = Constant.DEFAULT_MAX_SIZE.getValue(int.class);
         } else {
             size = Long.parseLong(maxSize);
         }
@@ -100,7 +92,7 @@ public class PictureProcessingController {
      * @param file 图片文件
      * @return 上传结果
      */
-    @PostMapping(value = "/uploadFile", produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/uploadFile")
     public ResultBean uploadFile(@RequestParam(value = "file") MultipartFile file, String openId) {
         Object sessionKey = redisTemplate.opsForValue().get(RedisKeyPrefix.WX_SESSION_KEY.getKeyPrefix() + openId);
         if (StringUtils.isBlank((String) sessionKey)) {
@@ -113,21 +105,32 @@ public class PictureProcessingController {
         return pictureProcessingService.uploadFile(file, openId);
     }
 
-    private Color getColor(String colorStr) {
-        Color backgroudColor = null;
-        if (colorStr.equals("red")) {
-            backgroudColor = Color.RED;
+    /**
+     * 获取相框列表
+     *
+     * @param openId 用户微信id
+     */
+    @GetMapping(value = "/getFrameList")
+    public ResultBean getFrameList(String openId) {
+        Object sessionKey = redisTemplate.opsForValue().get(RedisKeyPrefix.WX_SESSION_KEY.getKeyPrefix() + openId);
+        if (StringUtils.isBlank((String) sessionKey)) {
+            return new ResultBean(ResultBean.FAIL_CODE, "请重新授权");
         }
-        if (colorStr.equals("blue")) {
-            backgroudColor = Color.BLUE;
+        return pictureProcessingService.getFrameList();
+    }
+
+    /**
+     * 获取挂件列表
+     *
+     * @param openId 用户微信id
+     */
+    @GetMapping(value = "/getPendantList")
+    public ResultBean getPendantList(String openId) {
+        Object sessionKey = redisTemplate.opsForValue().get(RedisKeyPrefix.WX_SESSION_KEY.getKeyPrefix() + openId);
+        if (StringUtils.isBlank((String) sessionKey)) {
+            return new ResultBean(ResultBean.FAIL_CODE, "请重新授权");
         }
-        if (colorStr.equals("black")) {
-            backgroudColor = Color.BLACK;
-        }
-        if (colorStr.equals("white")) {
-            backgroudColor = Color.WHITE;
-        }
-        return backgroudColor;
+        return pictureProcessingService.getPendantList();
     }
 
 }

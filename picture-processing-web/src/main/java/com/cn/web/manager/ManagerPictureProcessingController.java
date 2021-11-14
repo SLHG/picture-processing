@@ -1,5 +1,6 @@
 package com.cn.web.manager;
 
+import com.cn.beans.common.Constant;
 import com.cn.beans.common.ResultBean;
 import com.cn.beans.manager.ManagerPictureProcessingInfo;
 import com.cn.service.config.ProjectConfig;
@@ -25,8 +26,6 @@ public class ManagerPictureProcessingController {
     final
     ManagerPictureProcessingService managerPictureProcessingService;
 
-    private static final String IMAGE_BASE_URL = "image_base_url";
-
     public ManagerPictureProcessingController(ManagerPictureProcessingService managerPictureProcessingService) {
         this.managerPictureProcessingService = managerPictureProcessingService;
     }
@@ -50,7 +49,7 @@ public class ManagerPictureProcessingController {
 
     private ResultBean getResultList(int start, int page, String id) {
         PageInfo<ManagerPictureProcessingInfo> list = managerPictureProcessingService.getList(start, page, id);
-        String baseUrl = ProjectConfig.PROJECT_CONFIG.get(IMAGE_BASE_URL);
+        String baseUrl = ProjectConfig.PROJECT_CONFIG.get(Constant.IMAGE_BASE_URL.getValue(String.class));
         ResultBean result = new ResultBean();
         result.setPageInfo(list);
         result.setResult(baseUrl);
@@ -60,7 +59,7 @@ public class ManagerPictureProcessingController {
     private ResultBean getResultListLikeId(int start, int page, String id) {
         //根据id模糊查询
         PageInfo<ManagerPictureProcessingInfo> list = managerPictureProcessingService.getListLikeId(start, page, id);
-        String baseUrl = ProjectConfig.PROJECT_CONFIG.get(IMAGE_BASE_URL);
+        String baseUrl = ProjectConfig.PROJECT_CONFIG.get(Constant.IMAGE_BASE_URL.getValue(String.class));
         ResultBean result = new ResultBean();
         result.setPageInfo(list);
         result.setResult(baseUrl);

@@ -1,11 +1,12 @@
 package com.cn.web;
 
 import com.baidu.aip.bodyanalysis.AipBodyAnalysis;
+import com.cn.beans.common.Constant;
 import com.cn.service.config.ConfigReload;
 import com.cn.service.config.ProjectConfig;
 
 public class BDFactory extends ConfigReload {
-    private static AipBodyAnalysis aipBodyAnalysis;
+    private static volatile AipBodyAnalysis aipBodyAnalysis;
 
     public static AipBodyAnalysis getAipBodyAnalysis() {
         if (aipBodyAnalysis == null) {
@@ -20,7 +21,9 @@ public class BDFactory extends ConfigReload {
     }
 
     static void load() {
-        aipBodyAnalysis = new AipBodyAnalysis(ProjectConfig.PROJECT_CONFIG.get("baidu_appid"), ProjectConfig.PROJECT_CONFIG.get("baidu_api_key"), ProjectConfig.PROJECT_CONFIG.get("baidu_secret_key"));
+        aipBodyAnalysis = new AipBodyAnalysis(ProjectConfig.PROJECT_CONFIG.get(Constant.BAIDU_APPID.getValue(String.class))
+                , ProjectConfig.PROJECT_CONFIG.get(Constant.BAIDU_API_KEY.getValue(String.class))
+                , ProjectConfig.PROJECT_CONFIG.get(Constant.BAIDU_SECRET_KEY.getValue(String.class)));
     }
 
     @Override
