@@ -59,7 +59,7 @@ public class PictureProcessingController {
             JSONObject object = aipBodyAnalysis.bodySeg(file.getBytes(), options);
             BodySegBean bodySegBean = JSON.parseObject(object.toString(), BodySegBean.class);
             if (bodySegBean.getPerson_num() >= 1) {
-                return new ResultBean(bodySegBean.getForeground());
+                return pictureProcessingService.uploadFile(bodySegBean.getForeground(), openId);
             } else {
                 return new ResultBean(ResultBean.FAIL_CODE, "未识别人脸");
             }

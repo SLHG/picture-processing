@@ -7,6 +7,8 @@ public interface PictureProcessingService {
 
     ResultBean uploadFile(MultipartFile file, String openId);
 
+    ResultBean uploadFile(String base64File, String openId);
+
     ResultBean getFrameList();
 
     ResultBean getPendantList();

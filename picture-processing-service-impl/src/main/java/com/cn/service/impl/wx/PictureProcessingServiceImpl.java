@@ -62,6 +62,29 @@ public class PictureProcessingServiceImpl implements PictureProcessingService {
         if (StringUtils.isBlank(filePathName)) {
             return new ResultBean(ResultBean.FAIL_CODE, "上传失败");
         }
+        return insertManagerPictureProcessingInfo(openId, filePathName, baseDir);
+    }
+
+    @Override
+    public ResultBean uploadFile(String base64File, String openId) {
+        String baseDir = ProjectConfig.PROJECT_CONFIG.get(Constant.PHOTO_UPLOAD_BASE_DIR.getValue(String.class));
+        if (StringUtils.isBlank(baseDir)) {
+            return new ResultBean(ResultBean.FAIL_CODE, "请设置文件上传基础目录");
+        }
+        String filePathName;
+        try {
+            filePathName = FileUtils.upload(baseDir, base64File, "jpg");
+        } catch (IOException e) {
+            log.error("uploadFile=>上传失败", e);
+            return new ResultBean(ResultBean.FAIL_CODE, "上传失败");
+        }
+        if (StringUtils.isBlank(filePathName)) {
+            return new ResultBean(ResultBean.FAIL_CODE, "上传失败");
+        }
+        return insertManagerPictureProcessingInfo(openId, filePathName, baseDir);
+    }
+
+    private ResultBean insertManagerPictureProcessingInfo(String openId, String filePathName, String baseDir) {
         ManagerPictureProcessingInfo info = new ManagerPictureProcessingInfo();
         info.setOpenId(openId);
         info.setPicturePath(filePathName);
@@ -69,7 +92,9 @@ public class PictureProcessingServiceImpl implements PictureProcessingService {
         info.setId(id);
         int i = managerPictureProcessingDao.insert(info);
         if (i > 0) {
-            return new ResultBean(id);
+            String baseUrl = ProjectConfig.PROJECT_CONFIG.get(Constant.IMAGE_BASE_URL.getValue(String.class));
+            info.setPicturePath(baseUrl + info.getPicturePath());
+            return new ResultBean(info);
         } else {
             FileUtils.delFile(baseDir, filePathName);
             return new ResultBean(ResultBean.FAIL_CODE, "上传失败");

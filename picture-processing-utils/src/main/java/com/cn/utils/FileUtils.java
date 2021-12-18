@@ -7,6 +7,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.Base64;
 
 
 /**
@@ -55,6 +59,28 @@ public class FileUtils {
             return "";
         }
         multipartFile.transferTo(file);
+        return getPathFileName(fileName);
+    }
+
+    /**
+     * 文件上传
+     *
+     * @param baseDir    相对应用的基目录
+     * @param base64File base64图片文件
+     * @param extension  上传文件类型
+     * @return 返回上传成功的文件名
+     * @throws IOException 比如读写文件出错时
+     */
+    public static String upload(String baseDir, String base64File, String extension)
+            throws IOException {
+        //创建文件名
+        String fileName = extractFilename(extension);
+        byte[] decodeFile = Base64.getDecoder().decode(base64File);
+        File file = getAbsoluteFile(baseDir, fileName);
+        if (file == null) {
+            return "";
+        }
+        Files.write(Paths.get(baseDir + File.separator + fileName), decodeFile, StandardOpenOption.CREATE);
         return getPathFileName(fileName);
     }
 
