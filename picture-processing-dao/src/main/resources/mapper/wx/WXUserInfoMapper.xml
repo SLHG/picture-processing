@@ -26,7 +26,7 @@
                 nick_name=
                 #{nickName},
             </if>
-            <if test="gender !=null and gender !=''">
+            <if test="gender !=null">
                 gender=
                 #{gender},
             </if>
