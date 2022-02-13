@@ -13,6 +13,11 @@
         insert into picture_processing_info (id, open_id, picture_path, picture_template_path)
         VALUES (#{id}, #{openId}, #{picturePath}, #{pictureTemplatePath})
     </insert>
+    <update id="updatePictureTemplatePath">
+        update picture_processing_info
+        set picture_template_path =#{templateFilePath}
+        where id = #{id}
+    </update>
     <delete id="delete" parameterType="map">
         delete
         from picture_processing_info

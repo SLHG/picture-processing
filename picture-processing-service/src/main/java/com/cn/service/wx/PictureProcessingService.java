@@ -5,12 +5,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface PictureProcessingService {
 
-    ResultBean uploadFile(MultipartFile file, String openId, MultipartFile templateFile);
+    ResultBean uploadFile(MultipartFile file, String openId);
 
     ResultBean uploadFile(String base64File, String openId);
 
     ResultBean getFrameList();
 
     ResultBean getPendantList();
+
+    ResultBean uploadTemplateFile(MultipartFile templateFile, String pictureId);
 
 }

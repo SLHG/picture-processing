@@ -22,4 +22,6 @@ public interface ManagerPictureProcessingDao {
     int delete(@Param("id") String id);
 
     ManagerPictureProcessingInfo selectById(@Param("id") String id);
+
+    int updatePictureTemplatePath(@Param("id") String pictureId, @Param("templateFilePath") String templateFilePath);
 }

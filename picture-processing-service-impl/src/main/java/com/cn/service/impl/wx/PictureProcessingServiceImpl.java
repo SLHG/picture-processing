@@ -50,16 +50,14 @@ public class PictureProcessingServiceImpl implements PictureProcessingService {
     }
 
     @Override
-    public ResultBean uploadFile(MultipartFile file, String openId, MultipartFile templateFile) {
+    public ResultBean uploadFile(MultipartFile file, String openId) {
         String baseDir = ProjectConfig.PROJECT_CONFIG.get(Constant.PHOTO_UPLOAD_BASE_DIR.getValue(String.class));
         if (StringUtils.isBlank(baseDir)) {
             return new ResultBean(ResultBean.FAIL_CODE, "请设置文件上传基础目录");
         }
         String filePathName;
-        String templateFilePathName;
         try {
             filePathName = FileUtils.upload(baseDir, file, MimeTypeUtils.PNG_JPG_EXTENSION);
-            templateFilePathName = FileUtils.upload(baseDir, templateFile, MimeTypeUtils.PNG_JPG_EXTENSION);
         } catch (FileSizeLimitExceededException e) {
             log.error("uploadFile=>文件大小超出最大限制", e);
             return new ResultBean(ResultBean.FAIL_CODE, "文件大小超出最大限制");
@@ -70,10 +68,54 @@ public class PictureProcessingServiceImpl implements PictureProcessingService {
             log.error("uploadFile=>上传失败", e);
             return new ResultBean(ResultBean.FAIL_CODE, "上传失败");
         }
-        if (StringUtils.isBlank(filePathName) || StringUtils.isBlank(templateFilePathName)) {
+        if (StringUtils.isBlank(filePathName)) {
             return new ResultBean(ResultBean.FAIL_CODE, "上传失败");
         }
-        return insertManagerPictureProcessingInfo(openId, filePathName, baseDir, templateFilePathName);
+        return insertManagerPictureProcessingInfo(openId, filePathName, baseDir);
+    }
+
+    @Override
+    public ResultBean uploadTemplateFile(MultipartFile templateFile, String pictureId) {
+        ManagerPictureProcessingInfo pictureProcessingInfo = managerPictureProcessingDao.selectById(pictureId);
+        if (pictureProcessingInfo == null) {
+            return new ResultBean(ResultBean.FAIL_CODE, "图片id错误");
+        }
+        String baseDir = ProjectConfig.PROJECT_CONFIG.get(Constant.PHOTO_UPLOAD_BASE_DIR.getValue(String.class));
+        if (StringUtils.isBlank(baseDir)) {
+            return new ResultBean(ResultBean.FAIL_CODE, "请设置文件上传基础目录");
+        }
+        try {
+            //如果存在原模板,先删除原模板
+            String pictureTemplatePath = pictureProcessingInfo.getPictureTemplatePath();
+            if (!StringUtils.isBlank(pictureTemplatePath)) {
+                FileUtils.delFile(baseDir, pictureTemplatePath);
+            }
+        } catch (Exception e) {
+            log.error("uploadTemplateFile=>删除原模板错误", e);
+        }
+        String templateFilePathName;
+        try {
+            templateFilePathName = FileUtils.upload(baseDir, templateFile, MimeTypeUtils.PNG_JPG_EXTENSION);
+        } catch (FileSizeLimitExceededException e) {
+            log.error("uploadTemplateFile=>文件大小超出最大限制", e);
+            return new ResultBean(ResultBean.FAIL_CODE, "文件大小超出最大限制");
+        } catch (InvalidExtensionException e) {
+            log.error("uploadTemplateFile=>文件格式错误", e);
+            return new ResultBean(ResultBean.FAIL_CODE, "文件格式错误");
+        } catch (IOException e) {
+            log.error("uploadTemplateFile=>上传失败", e);
+            return new ResultBean(ResultBean.FAIL_CODE, "上传失败");
+        }
+        if (StringUtils.isBlank(templateFilePathName)) {
+            return new ResultBean(ResultBean.FAIL_CODE, "上传失败");
+        }
+        int i = managerPictureProcessingDao.updatePictureTemplatePath(pictureId, templateFilePathName);
+        if (i > 0) {
+            return new ResultBean();
+        } else {
+            FileUtils.delFile(baseDir, templateFilePathName);
+            return new ResultBean(ResultBean.FAIL_CODE, "上传失败");
+        }
     }
 
     /**
@@ -121,26 +163,6 @@ public class PictureProcessingServiceImpl implements PictureProcessingService {
             return new ResultBean(info);
         } else {
             FileUtils.delFile(baseDir, filePathName);
-            return new ResultBean(ResultBean.FAIL_CODE, "上传失败");
-        }
-    }
-
-    private ResultBean insertManagerPictureProcessingInfo(String openId, String filePathName, String baseDir, String templateFilePathName) {
-        ManagerPictureProcessingInfo info = new ManagerPictureProcessingInfo();
-        info.setOpenId(openId);
-        info.setPicturePath(filePathName);
-        info.setPictureTemplatePath(templateFilePathName);
-        String id = getPictureId();
-        info.setId(id);
-        int i = managerPictureProcessingDao.insert(info);
-        if (i > 0) {
-            String baseUrl = ProjectConfig.PROJECT_CONFIG.get(Constant.IMAGE_BASE_URL.getValue(String.class));
-            info.setPicturePath(baseUrl + filePathName);
-            info.setPictureTemplatePath(baseUrl + templateFilePathName);
-            return new ResultBean(info);
-        } else {
-            FileUtils.delFile(baseDir, filePathName);
-            FileUtils.delFile(baseDir, templateFilePathName);
             return new ResultBean(ResultBean.FAIL_CODE, "上传失败");
         }
     }

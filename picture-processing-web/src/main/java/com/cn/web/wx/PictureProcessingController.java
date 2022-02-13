@@ -89,12 +89,11 @@ public class PictureProcessingController {
     /**
      * 处理图片上传
      *
-     * @param file         处理后的图片文件
-     * @param templateFile 处理后的图片模板文件
+     * @param file 处理后的图片文件
      * @return 上传结果
      */
     @PostMapping(value = "/uploadFile")
-    public ResultBean uploadFile(@RequestParam(value = "file") MultipartFile file, String openId, @RequestParam(value = "templateFile") MultipartFile templateFile) {
+    public ResultBean uploadFile(@RequestParam(value = "file") MultipartFile file, String openId) {
         Object sessionKey = redisTemplate.opsForValue().get(RedisKeyPrefix.WX_SESSION_KEY.getKeyPrefix() + openId);
         if (StringUtils.isBlank((String) sessionKey)) {
             return new ResultBean(ResultBean.FAIL_CODE, "请重新授权");
@@ -103,7 +102,24 @@ public class PictureProcessingController {
         if (result != null) {
             return result;
         }
-        return pictureProcessingService.uploadFile(file, openId, templateFile);
+        return pictureProcessingService.uploadFile(file, openId);
+    }
+
+
+    /**
+     * 模板图片上传
+     *
+     * @param templateFile 处理后的图片模板文件
+     * @param pictureId    图片id
+     * @return 上传结果
+     */
+    @PostMapping(value = "/uploadTemplateFile")
+    public ResultBean uploadTemplateFile(@RequestParam(value = "templateFile") MultipartFile templateFile, @RequestParam String pictureId) {
+        ResultBean result = checkFile(templateFile);
+        if (result != null) {
+            return result;
+        }
+        return pictureProcessingService.uploadTemplateFile(templateFile, pictureId);
     }
 
     /**
