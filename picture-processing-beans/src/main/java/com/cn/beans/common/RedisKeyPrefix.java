@@ -2,7 +2,9 @@ package com.cn.beans.common;
 
 public enum RedisKeyPrefix {
     //微信密钥
-    WX_SESSION_KEY("wx:session:", "用户微信会话密钥", "key", "wx:session:123", 3600);
+    WX_SESSION_KEY("wx:session:", "用户微信会话密钥", "key", "wx:session:123", 3600),
+    //生成图片id自增key前缀
+    PICTURE_ID("picture:id:", "生成图片id前缀", "key", "picture:id:20220213", 24 * 3600);
 
     //key前缀
     private final String keyPrefix;

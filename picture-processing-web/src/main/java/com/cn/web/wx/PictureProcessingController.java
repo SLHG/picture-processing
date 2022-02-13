@@ -89,11 +89,12 @@ public class PictureProcessingController {
     /**
      * 处理图片上传
      *
-     * @param file 图片文件
+     * @param file         处理后的图片文件
+     * @param templateFile 处理后的图片模板文件
      * @return 上传结果
      */
     @PostMapping(value = "/uploadFile")
-    public ResultBean uploadFile(@RequestParam(value = "file") MultipartFile file, String openId) {
+    public ResultBean uploadFile(@RequestParam(value = "file") MultipartFile file, String openId, @RequestParam(value = "templateFile") MultipartFile templateFile) {
         Object sessionKey = redisTemplate.opsForValue().get(RedisKeyPrefix.WX_SESSION_KEY.getKeyPrefix() + openId);
         if (StringUtils.isBlank((String) sessionKey)) {
             return new ResultBean(ResultBean.FAIL_CODE, "请重新授权");
@@ -102,7 +103,7 @@ public class PictureProcessingController {
         if (result != null) {
             return result;
         }
-        return pictureProcessingService.uploadFile(file, openId);
+        return pictureProcessingService.uploadFile(file, openId, templateFile);
     }
 
     /**
