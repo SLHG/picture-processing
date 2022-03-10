@@ -93,7 +93,7 @@ public class PictureProcessingController {
      * @return 上传结果
      */
     @PostMapping(value = "/uploadFile")
-    public ResultBean uploadFile(@RequestParam(value = "file") MultipartFile file, String openId) {
+    public ResultBean uploadFile(@RequestParam(value = "file") MultipartFile file, String openId, @RequestParam(defaultValue = "1") String photoType) {
         Object sessionKey = redisTemplate.opsForValue().get(RedisKeyPrefix.WX_SESSION_KEY.getKeyPrefix() + openId);
         if (StringUtils.isBlank((String) sessionKey)) {
             return new ResultBean(ResultBean.FAIL_CODE, "请重新授权");
@@ -102,7 +102,7 @@ public class PictureProcessingController {
         if (result != null) {
             return result;
         }
-        return pictureProcessingService.uploadFile(file, openId);
+        return pictureProcessingService.uploadFile(file, openId, photoType);
     }
 
 
@@ -125,15 +125,16 @@ public class PictureProcessingController {
     /**
      * 获取相框列表
      *
-     * @param openId 用户微信id
+     * @param openId    用户微信id
+     * @param photoType 相框类型
      */
     @GetMapping(value = "/getFrameList")
-    public ResultBean getFrameList(String openId) {
+    public ResultBean getFrameList(String openId, @RequestParam(defaultValue = "1") String photoType) {
         Object sessionKey = redisTemplate.opsForValue().get(RedisKeyPrefix.WX_SESSION_KEY.getKeyPrefix() + openId);
         if (StringUtils.isBlank((String) sessionKey)) {
             return new ResultBean(ResultBean.FAIL_CODE, "请重新授权");
         }
-        return pictureProcessingService.getFrameList();
+        return pictureProcessingService.getFrameList(photoType);
     }
 
     /**

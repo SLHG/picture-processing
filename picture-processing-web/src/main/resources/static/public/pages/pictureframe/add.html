@@ -21,6 +21,7 @@
 
 <body>
 <div class="weadmin-body">
+    <form class="layui-form">
     <div class="layui-form-item">
         <label for="frameName" class="layui-form-label">
             <span class="we-red">*</span>相框名称
@@ -31,6 +32,17 @@
         </div>
     </div>
     <div class="layui-form-item">
+        <label for="frameType" class="layui-form-label">
+            <span class="we-red">*</span>相框类型
+        </label>
+        <div class="layui-input-inline" id="frameType" name="frameType" lay-verify="frameType">
+            <select name="contrller" id="frameTypeVale">
+                <option value="1" >标准款</option>
+                <option value="2" >耳朵款</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
         <label for="demo1" class="layui-form-label">
             <span class="we-red">*</span>图片预览
         </label>
@@ -38,12 +50,13 @@
     </div>
     <div class="layui-form-item">
         <label for="upload" class="layui-form-label"></label>
-        <button class="layui-btn" id="upload">上传相框</button>
+        <button type="button" class="layui-btn layui-btn-primary" id="upload">上传相框</button>
     </div>
     <div class="layui-form-item">
         <label for="submit" class="layui-form-label"></label>
         <span class="layui-btn" id="submit">提交</span>
     </div>
+    </form>
 </div>
 <script src="./../../lib/layui/layui.js" type="text/javascript"></script>
 <script type="text/javascript">
@@ -65,6 +78,9 @@
             data: {
                 frameName: function () {
                     return $("#frameName").val()
+                },
+                frameType: function () {
+                    return $("#frameTypeVale").val()
                 }
             },
             before: function () {

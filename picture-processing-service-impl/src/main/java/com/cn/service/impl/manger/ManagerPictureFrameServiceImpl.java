@@ -34,11 +34,11 @@ public class ManagerPictureFrameServiceImpl implements ManagerPictureFrameServic
     @Override
     public PageInfo<ManagerPictureFrameInfo> getList(int start, int page) {
         PageHelper.startPage(start, page);
-        return new PageInfo<>(managerPictureFrameDao.getList());
+        return new PageInfo<>(managerPictureFrameDao.getList(null));
     }
 
     @Override
-    public ResultBean uploadFile(MultipartFile file, String frameName) {
+    public ResultBean uploadFile(MultipartFile file, String frameName, String frameType) {
         String baseDir = ProjectConfig.PROJECT_CONFIG.get(Constant.FRAME_UPLOAD_BASE_DIR.getValue(String.class));
         if (StringUtils.isBlank(baseDir)) {
             return new ResultBean(ResultBean.FAIL_CODE, "请设置文件上传基础目录");
@@ -62,6 +62,7 @@ public class ManagerPictureFrameServiceImpl implements ManagerPictureFrameServic
         ManagerPictureFrameInfo info = new ManagerPictureFrameInfo();
         info.setPicturePath(filePathName);
         info.setFrameName(frameName);
+        info.setFrameType(frameType);
         int i = managerPictureFrameDao.insert(info);
         if (i > 0) {
             return new ResultBean();

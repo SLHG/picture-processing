@@ -10,7 +10,7 @@ import java.util.List;
 public interface ManagerPictureFrameDao {
 
 
-    List<ManagerPictureFrameInfo> getList();
+    List<ManagerPictureFrameInfo> getList(@Param("frameType") String frameType);
 
     int insert(ManagerPictureFrameInfo info);
 

@@ -8,8 +8,8 @@
         <result column="create_time" property="createTime" jdbcType="VARCHAR"/>
     </resultMap>
     <insert id="insert" parameterType="com.cn.beans.manager.ManagerPictureFrameInfo">
-        insert into picture_frame_info (frame_name, picture_path)
-        values (#{frameName}, #{picturePath})
+        insert into picture_frame_info (frame_name, picture_path, frame_type)
+        values (#{frameName}, #{picturePath}, #{frameType})
     </insert>
     <delete id="delete">
         delete
@@ -21,6 +21,10 @@
     <select id="getList" resultMap="BaseResultMap" parameterType="map">
         select id, frame_name, picture_path, DATE_FORMAT(create_time, '%Y-%m-%d %H:%i:%s') as create_time
         from picture_frame_info
+        <if test="frameType !=null">
+            where frame_type=
+            #{frameType}
+        </if>
         order by create_time desc
     </select>
     <select id="selectById" resultMap="BaseResultMap" parameterType="map">

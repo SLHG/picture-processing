@@ -24,7 +24,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -40,7 +42,12 @@ public class PictureProcessingServiceImpl implements PictureProcessingService {
     final
     RedisTemplate<String, Object> redisTemplate;
 
-    private static final String PICTURE_ID_PREFIX = "BZK";
+    private static final Map<String, String> PICTURE_ID_PREFIX_MAP = new HashMap<String, String>() {{
+        put("1", PICTURE_ID_PREFIX_DEFAULT);
+        put("2", "EDK");
+    }};
+    private static final String PICTURE_ID_PREFIX_DEFAULT = "BZK";
+
 
     public PictureProcessingServiceImpl(ManagerPictureProcessingDao managerPictureProcessingDao, ManagerPictureFrameDao managerPictureFrameDao, ManagerPicturePendantDao managerPicturePendantDao, RedisTemplate<String, Object> redisTemplate) {
         this.managerPictureProcessingDao = managerPictureProcessingDao;
@@ -50,7 +57,7 @@ public class PictureProcessingServiceImpl implements PictureProcessingService {
     }
 
     @Override
-    public ResultBean uploadFile(MultipartFile file, String openId) {
+    public ResultBean uploadFile(MultipartFile file, String openId, String photoType) {
         String baseDir = ProjectConfig.PROJECT_CONFIG.get(Constant.PHOTO_UPLOAD_BASE_DIR.getValue(String.class));
         if (StringUtils.isBlank(baseDir)) {
             return new ResultBean(ResultBean.FAIL_CODE, "请设置文件上传基础目录");
@@ -71,7 +78,7 @@ public class PictureProcessingServiceImpl implements PictureProcessingService {
         if (StringUtils.isBlank(filePathName)) {
             return new ResultBean(ResultBean.FAIL_CODE, "上传失败");
         }
-        return insertManagerPictureProcessingInfo(openId, filePathName, baseDir);
+        return insertManagerPictureProcessingInfo(openId, filePathName, baseDir, photoType);
     }
 
     @Override
@@ -121,14 +128,17 @@ public class PictureProcessingServiceImpl implements PictureProcessingService {
     /**
      * 生成图片id
      *
+     * @param photoType 图片类型
      * @return 图片id
      */
-    private String getPictureId() {
+    private String getPictureId(String photoType) {
+        String type = PICTURE_ID_PREFIX_MAP.get(photoType);
+        String pictureIdPrefix = StringUtils.isBlank(type) ? PICTURE_ID_PREFIX_DEFAULT : type;
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
         String formatDate = format.format(new Date());
         Long increment = redisTemplate.opsForValue().increment(RedisKeyPrefix.PICTURE_ID.getKeyPrefix() + formatDate);
         redisTemplate.expire(RedisKeyPrefix.PICTURE_ID.getKeyPrefix() + formatDate, RedisKeyPrefix.PICTURE_ID.getExpire(), TimeUnit.SECONDS);
-        return PICTURE_ID_PREFIX + formatDate + String.format("%0" + 9 + "d", increment);
+        return pictureIdPrefix + formatDate + String.format("%0" + 5 + "d", increment);
     }
 
     @Override
@@ -147,14 +157,14 @@ public class PictureProcessingServiceImpl implements PictureProcessingService {
         if (StringUtils.isBlank(filePathName)) {
             return new ResultBean(ResultBean.FAIL_CODE, "上传失败");
         }
-        return insertManagerPictureProcessingInfo(openId, filePathName, baseDir);
+        return insertManagerPictureProcessingInfo(openId, filePathName, baseDir, "1");
     }
 
-    private ResultBean insertManagerPictureProcessingInfo(String openId, String filePathName, String baseDir) {
+    private ResultBean insertManagerPictureProcessingInfo(String openId, String filePathName, String baseDir, String photoType) {
         ManagerPictureProcessingInfo info = new ManagerPictureProcessingInfo();
         info.setOpenId(openId);
         info.setPicturePath(filePathName);
-        String id = getPictureId();
+        String id = getPictureId(photoType);
         info.setId(id);
         int i = managerPictureProcessingDao.insert(info);
         if (i > 0) {
@@ -168,9 +178,9 @@ public class PictureProcessingServiceImpl implements PictureProcessingService {
     }
 
     @Override
-    public ResultBean getFrameList() {
+    public ResultBean getFrameList(String frameType) {
         String baseUrl = ProjectConfig.PROJECT_CONFIG.get(Constant.IFRAME_BASE_URL.getValue(String.class));
-        List<ManagerPictureFrameInfo> list = managerPictureFrameDao.getList();
+        List<ManagerPictureFrameInfo> list = managerPictureFrameDao.getList(frameType);
         ResultBean resultBean = new ResultBean();
         resultBean.setResult(baseUrl);
         resultBean.setResultList(list);

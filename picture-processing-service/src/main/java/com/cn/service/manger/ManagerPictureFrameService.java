@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface ManagerPictureFrameService {
     PageInfo<ManagerPictureFrameInfo> getList(int start, int page);
 
-    ResultBean uploadFile(MultipartFile file, String frameName);
+    ResultBean uploadFile(MultipartFile file, String frameName, String frameType);
 
     ResultBean delete(String id);
 }

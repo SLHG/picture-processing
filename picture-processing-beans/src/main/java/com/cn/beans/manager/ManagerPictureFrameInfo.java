@@ -6,6 +6,7 @@ import lombok.Data;
 public class ManagerPictureFrameInfo {
     private int id;
     private String frameName;
+    private String frameType;
     private String picturePath;
     private String createTime;
 }

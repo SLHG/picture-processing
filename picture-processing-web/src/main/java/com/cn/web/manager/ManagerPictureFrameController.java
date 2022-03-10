@@ -39,12 +39,12 @@ public class ManagerPictureFrameController {
      * @return 上传结果
      */
     @PostMapping(value = "/uploadFile", produces = "application/json;charset=UTF-8")
-    public ResultBean uploadFile(@RequestParam(value = "file") MultipartFile file, @RequestParam String frameName) {
+    public ResultBean uploadFile(@RequestParam(value = "file") MultipartFile file, @RequestParam String frameName, @RequestParam(defaultValue = "1") String frameType) {
         ResultBean result = checkFile(file);
         if (result != null) {
             return result;
         }
-        return managerPictureFrameService.uploadFile(file, frameName);
+        return managerPictureFrameService.uploadFile(file, frameName, frameType);
     }
 
     @DeleteMapping("/delete")
