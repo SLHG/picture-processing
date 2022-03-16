@@ -14,6 +14,7 @@
 
     <properties>
         <java.version>8</java.version>
+        <main.basedir>${project.basedir}/../</main.basedir>
     </properties>
     <dependencies>
         <dependency>
@@ -141,6 +142,13 @@
                     <include>**/*.woff2</include>
                     <include>**/*.eot</include>
                     <include>**/*.xlsx</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>${main.basedir}/lib</directory>
+                <targetPath>BOOT-INF/lib/</targetPath>
+                <includes>
+                    <include>**/*.jar</include>
                 </includes>
             </resource>
         </resources>

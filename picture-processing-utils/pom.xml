@@ -13,6 +13,7 @@
 
     <properties>
         <java.version>8</java.version>
+        <main.basedir>${project.basedir}/../</main.basedir>
     </properties>
     <dependencies>
         <dependency>
@@ -97,7 +98,7 @@
             <artifactId>opencv</artifactId>
             <scope>system</scope>
             <version>0.1</version>
-            <systemPath>${pom.basedir}/lib/opencv-455.jar</systemPath>
+            <systemPath>${main.basedir}/lib/opencv-455.jar</systemPath>
         </dependency>
     </dependencies>
 </project>
