@@ -44,7 +44,7 @@ public class PictureProcessingController {
      * @return 去除前景base64图片
      */
     @PostMapping(value = "/getForeground")
-    public ResultBean getForeground(@RequestParam(value = "file") MultipartFile file, String openId) {
+    public ResultBean getForeground(@RequestParam(value = "file") MultipartFile file, @RequestParam String openId) {
         Object sessionKey = redisTemplate.opsForValue().get(RedisKeyPrefix.WX_SESSION_KEY.getKeyPrefix() + openId);
         if (StringUtils.isBlank((String) sessionKey)) {
             return new ResultBean(ResultBean.FAIL_CODE, "请重新授权");

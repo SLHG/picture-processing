@@ -11,16 +11,14 @@ import com.cn.dao.manager.ManagerPicturePendantDao;
 import com.cn.dao.manager.ManagerPictureProcessingDao;
 import com.cn.service.config.ProjectConfig;
 import com.cn.service.wx.PictureProcessingService;
-import com.cn.utils.FileSizeLimitExceededException;
-import com.cn.utils.FileUtils;
-import com.cn.utils.InvalidExtensionException;
-import com.cn.utils.MimeTypeUtils;
+import com.cn.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -157,6 +155,7 @@ public class PictureProcessingServiceImpl implements PictureProcessingService {
         if (StringUtils.isBlank(filePathName)) {
             return new ResultBean(ResultBean.FAIL_CODE, "上传失败");
         }
+        ImgUtils.beauty(baseDir + File.separator + filePathName);
         return insertManagerPictureProcessingInfo(openId, filePathName, baseDir, "1");
     }
 

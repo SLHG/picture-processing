@@ -92,5 +92,12 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.openpnp</groupId>
+            <artifactId>opencv</artifactId>
+            <scope>system</scope>
+            <version>0.1</version>
+            <systemPath>${pom.basedir}/lib/opencv-455.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>

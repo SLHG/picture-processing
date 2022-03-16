@@ -114,13 +114,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.openpnp</groupId>
-            <artifactId>opencv</artifactId>
-            <scope>system</scope>
-            <version>0.1</version>
-            <systemPath>${pom.basedir}/lib/opencv-455.jar</systemPath>
-        </dependency>
     </dependencies>
     <build>
         <finalName>picture-processing</finalName>
